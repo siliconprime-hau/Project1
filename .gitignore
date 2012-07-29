@@ -15,9 +15,6 @@
 ModelingProject1
 Project1
 Project1.*
-*.mk
-
-
 ipch
 Debug
 *.*.user
@@ -27,6 +24,7 @@ Debug
 .*
 
 #android
+*.mk
 bin
 libs
 obj
