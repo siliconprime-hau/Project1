@@ -5,33 +5,39 @@
 
 ImageCover::ImageCover( const char* fileName )
 {
-	/*mTexID = SOIL_load_OGL_texture_ex
+	mTexID = SOIL_load_OGL_texture_ex
 		(
 			fileName,
 			SOIL_LOAD_AUTO,
 			SOIL_CREATE_NEW_ID,
 			SOIL_FLAG_POWER_OF_TWO,
-			&mWidth, &mHeight
-		);*/			
-	
-	/*FILE *f = fopen(fileName, "rb");
+			&mImageWidth, &mImageHeight
+		);				
+}
+
+ImageCover::ImageCover( FILE *f )
+{
+	//FILE *f = fopen(fileName, "rb");
 	mTexID = SOIL_load_OGL_texture_ex_from_file
 		(
 			f,
 			SOIL_LOAD_AUTO,
 			SOIL_CREATE_NEW_ID,
 			SOIL_FLAG_POWER_OF_TWO,
-			&mWidth, &mHeight
+			&mImageWidth, &mImageHeight
 		);
-	fclose(f);*/
+	//fclose(f);
+}
 
-	FILE *f = fopen(fileName, "rb");
-	fseek( f, 0, SEEK_END );
-	int len = ftell( f );
-	rewind( f );
-	unsigned char* buffer = new unsigned char[len];
-	fread( buffer, sizeof(char), len, f);
-	fclose(f);
+ImageCover::ImageCover( unsigned char* buffer, int len )
+{
+	//FILE *f = fopen(fileName, "rb");
+	//fseek( f, 0, SEEK_END );
+	//int len = ftell( f );
+	//rewind( f );
+	//unsigned char* buffer = new unsigned char[len];
+	//fread( buffer, sizeof(char), len, f);
+	//fclose(f);
 	mTexID = SOIL_load_OGL_texture_ex_from_memory
 		(
 			buffer,
@@ -39,9 +45,9 @@ ImageCover::ImageCover( const char* fileName )
 			SOIL_LOAD_AUTO,
 			SOIL_CREATE_NEW_ID,
 			SOIL_FLAG_POWER_OF_TWO,
-			&mWidth, &mHeight
+			&mImageWidth, &mImageHeight
 		);			
-	delete[] buffer;
+	//delete[] buffer;
 }
 
 ImageCover::~ImageCover()
@@ -57,7 +63,7 @@ void ImageCover::PaintA
 {
 	if(
 		(img_x < 0) || (img_y < 0)
-		|| (img_x > (mWidth-1)) || (img_y > (mHeight-1))
+		|| (img_x > (mImageWidth-1)) || (img_y > (mImageHeight-1))
 		|| (img_w < 1) || (img_h < 1)
 	)
 	{
@@ -90,26 +96,26 @@ void ImageCover::PaintA
 
 	GLfloat tex_coord[] =
 	{
-		min( img_x/mWidth, 1 ),//x coord
-		min( img_y/mHeight, 1 ),//y coord
+		min( img_x/mImageWidth, 1 ),//x coord
+		min( img_y/mImageHeight, 1 ),//y coord
 
-		min( (img_x + img_w)/mWidth, 1 ),
-		min( img_y/mHeight, 1 ),
+		min( (img_x + img_w)/mImageWidth, 1 ),
+		min( img_y/mImageHeight, 1 ),
 
-		min( (img_x + img_w)/mWidth, 1 ),
-		min( (img_y + img_h)/mHeight, 1 ),
+		min( (img_x + img_w)/mImageWidth, 1 ),
+		min( (img_y + img_h)/mImageHeight, 1 ),
 
-		min( img_x/mWidth, 1 ),
-		min( (img_y + img_h)/mHeight, 1 )
+		min( img_x/mImageWidth, 1 ),
+		min( (img_y + img_h)/mImageHeight, 1 )
 	};
 
-	if( (img_x + img_w) > mWidth )
+	if( (img_x + img_w) > mImageWidth )
 	{
-		scr_w -= (scr_w * ((img_x + img_w) - mWidth)/img_w);
+		scr_w -= (scr_w * ((img_x + img_w) - mImageWidth)/img_w);
 	}
-	if( (img_y + img_h) > mHeight )
+	if( (img_y + img_h) > mImageHeight )
 	{
-		scr_h -= (scr_h * ((img_y + img_h) - mHeight)/img_h);
+		scr_h -= (scr_h * ((img_y + img_h) - mImageHeight)/img_h);
 	}
 
 	//update visible zone on GraphicObject class
@@ -139,7 +145,7 @@ void ImageCover::PaintA
 
 void ImageCover::PaintA( float scr_x, float scr_y, int anchor_h, int anchor_v )
 {
-	PaintA( scr_x, scr_y, mWidth, mHeight, 0, 0, mWidth, mHeight, anchor_h, anchor_v );
+	PaintA( scr_x, scr_y, mImageWidth, mImageHeight, 0, 0, mImageWidth, mImageHeight, anchor_h, anchor_v );
 }
 
 void ImageCover::PaintA( float scr_x, float scr_y, float img_x, float img_y, float img_w, float img_h, int anchor_h, int anchor_v )
@@ -149,7 +155,7 @@ void ImageCover::PaintA( float scr_x, float scr_y, float img_x, float img_y, flo
 
 void ImageCover::PaintA( float scr_x, float scr_y, float scr_w, float scr_h, int anchor_h, int anchor_v )
 {
-	PaintA( scr_x, scr_y, scr_w, scr_h, 0, 0, mWidth, mHeight, anchor_h, anchor_v );
+	PaintA( scr_x, scr_y, scr_w, scr_h, 0, 0, mImageWidth, mImageHeight, anchor_h, anchor_v );
 }
 
 //----------//
@@ -164,7 +170,7 @@ void ImageCover::Paint
 
 void ImageCover::Paint( float scr_x, float scr_y )
 {
-	PaintA( scr_x, scr_y, mWidth, mHeight, 0, 0, mWidth, mHeight, ANCHOR_LEFT, ANCHOR_TOP );
+	PaintA( scr_x, scr_y, mImageWidth, mImageHeight, 0, 0, mImageWidth, mImageHeight, ANCHOR_LEFT, ANCHOR_TOP );
 }
 
 void ImageCover::Paint( float scr_x, float scr_y, float img_x, float img_y, float img_w, float img_h )
@@ -174,5 +180,5 @@ void ImageCover::Paint( float scr_x, float scr_y, float img_x, float img_y, floa
 
 void ImageCover::Paint( float scr_x, float scr_y, float scr_w, float scr_h )
 {
-	PaintA( scr_x, scr_y, scr_w, scr_h, 0, 0, mWidth, mHeight, ANCHOR_LEFT, ANCHOR_TOP );
+	PaintA( scr_x, scr_y, scr_w, scr_h, 0, 0, mImageWidth, mImageHeight, ANCHOR_LEFT, ANCHOR_TOP );
 }

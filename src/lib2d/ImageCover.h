@@ -5,6 +5,7 @@
 
 #include <GLES2/gl2.h>
 #include "GraphicObject.h"
+#include <stdio.h>
 
 enum ANCHOR
 {
@@ -19,10 +20,12 @@ class ImageCover: public GraphicObject
 {
 private:
 	GLuint mTexID;	
-	unsigned int mWidth, mHeight;
+	unsigned int mImageWidth, mImageHeight;
 
 public:
 	ImageCover( const char* fileName );
+	ImageCover( FILE *f );
+	ImageCover( unsigned char* buffer, int len );
 	~ImageCover();		
 
 	void PaintA
