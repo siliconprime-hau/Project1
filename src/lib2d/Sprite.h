@@ -8,9 +8,11 @@ struct Anim
 	int mCurrentFrame;
 	int mNumFrame;
 	unsigned long mLastFrameTime;
+	int mPaintedFrameCount;
 	short* mAnim;
 
 	Anim( short* anim );
+	void ResetAnim();
 };
 
 /* idea of sprite structure
@@ -41,7 +43,7 @@ short* frames[] =
 short anim1_data[] =
 {
 	2,//nums count
-	0, 10, 20, 100,//moduleId( but going to frameId ), x, y, time milliseconds
+	0, 10, 20, 100,//frameId, x, y, time milliseconds
 	0, 10, 20, 100
 };
 short anim2_data[] =
@@ -74,7 +76,30 @@ public:
 
 	void PaintModule( int moduleId, int x, int y );
 	void PaintFrame( int frameId, int x, int y );
+	
+	/*
+	update anim by time
+	the anim data will be like this
+	short anim1_data[] =
+	{
+		2,//nums count
+		0, 10, 20, 100,//frameId, x, y, time milliseconds
+		0, 10, 20, 100
+	};
+	*/
 	void PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis );
+
+	/*
+	update anim by fps
+	the anim data will be like this
+	short anim1_data[] =
+	{
+		2,//nums count
+		0, 10, 20, 3,//frameId, x, y, num frames to paint
+		0, 10, 20, 1
+	};
+	*/
+	void PaintAnim( int animId, int x, int y );
 };
 
 #endif //__SPRITE__

@@ -19,6 +19,7 @@ enum RES_IMAGE
 	BMP,
 	TGA,
 	DDS,
+	TEST_SPRITE,
 
 	RES_IMAGE_COUNT
 };

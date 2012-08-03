@@ -6,7 +6,16 @@ Anim::Anim( short* anim )
 	mNumFrame = mAnim[0];
 	mCurrentFrame = 0;
 	mLastFrameTime = 0;
+	mPaintedFrameCount = 0;
 }
+
+void Anim::ResetAnim()
+{
+	mCurrentFrame = 0;
+	mLastFrameTime = 0;
+	mPaintedFrameCount = 0;
+}
+
 
 Sprite::Sprite( unsigned short* modules, short** frames, Anim** anims, ImageCover* imageCover )
 {
@@ -31,7 +40,7 @@ void Sprite::PaintFrame( int frameId, int x, int y )
 
 	for( int i = 0; i < frame[0]; i ++ )
 	{
-		PaintModule( frame[i*3 + 1], frame[i*3 + 2], frame[i*3 + 3] );
+		PaintModule( frame[i*3 + 1], frame[i*3 + 2] + x, frame[i*3 + 3] + y );
 	}
 }
 
@@ -43,17 +52,35 @@ void Sprite::PaintAnim( int animId, int x, int y, unsigned long currentTimeMilli
 	if( anim->mLastFrameTime == 0 )
 	{
 		anim->mCurrentFrame = 0;		
+		anim->mLastFrameTime = currentTimeMillis;
 	}
 	else
-	{
+	{		
 		if( ( currentTimeMillis - anim->mLastFrameTime ) > anim_data[anim->mCurrentFrame * 4 + 4] )
 		{
 			anim->mCurrentFrame++;
+			anim->mLastFrameTime = currentTimeMillis;
 		}
 	}
-	
-	anim->mLastFrameTime = currentTimeMillis;
+		
 	anim->mCurrentFrame = anim->mCurrentFrame%anim->mNumFrame;
 
-	PaintFrame( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2],  anim_data[anim->mCurrentFrame * 4 + 3] );
+	PaintFrame( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y );
+}
+
+void Sprite::PaintAnim( int animId, int x, int y )
+{
+	Anim* anim = mAnims[animId];
+	short* anim_data = anim->mAnim;
+		
+	if( anim->mPaintedFrameCount >= anim_data[anim->mCurrentFrame * 4 + 4] )
+	{
+		anim->mCurrentFrame++;
+		anim->mPaintedFrameCount = 0;
+	}
+	
+	anim->mPaintedFrameCount++;
+	anim->mCurrentFrame = anim->mCurrentFrame%anim->mNumFrame;
+
+	PaintFrame( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y );
 }
