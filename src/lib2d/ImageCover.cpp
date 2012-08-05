@@ -70,7 +70,7 @@ void ImageCover::PaintA
 		return;//not valid rect
 	}
 
-	ResetTexMvp();
+	gResetTexMvp();
 	esMatrixMultiply( &gMvpMatrix, &gModelView, &gOrthor );
 	glUniformMatrix4fv( gTexMvpLoc, 1, GL_FALSE, (GLfloat*) &gMvpMatrix.m[0][0] );
 	
@@ -124,7 +124,7 @@ void ImageCover::PaintA
 	mVisibleWidth = scr_w;
 	mVisibleHeight = scr_h;
 
-	GLfloat* vertices = GenRect( scr_x, scr_y, scr_w, scr_h );
+	GLfloat* vertices = gGenRect( scr_x, scr_y, scr_w, scr_h );
 	GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
 
 	glVertexAttribPointer( gTexPositionLoc, 2, GL_FLOAT, GL_FALSE, 0, vertices );	
