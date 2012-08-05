@@ -90,7 +90,7 @@ public:
 	void PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis );
 
 	/*
-	update anim by fps
+	update anim by frame
 	the anim data will be like this
 	short anim1_data[] =
 	{
