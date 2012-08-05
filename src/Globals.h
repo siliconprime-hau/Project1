@@ -12,6 +12,9 @@ extern float gScreenHeight;
 extern GameState* gGameState;
 extern stack<GameState*> gGameStateStack;
 
+void PushState( GameState* gameState );
+GameState* PopState();
+
 enum TOUCH_TYPE
 {
 	TOUCH_DOWN = 0,
