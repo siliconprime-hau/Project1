@@ -4,10 +4,17 @@
 #include "GameState.h"
 #include <stack>
 
+#define SCREEN_SIMULATE_HEIGHT	640.0f//sceeen heigth for caculate process
+
 using namespace std;
 
+//screen size for cacualte process
 extern float gScreenWidth;
 extern float gScreenHeight;
+//real screen size
+extern float gScreenOutputWidth;
+extern float gScreenOutPutHeight;
+extern float gScreenScaleRatio;
 
 extern GameState* gGameState;
 extern stack<GameState*> gGameStateStack;

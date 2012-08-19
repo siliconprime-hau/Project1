@@ -1,22 +1,5 @@
 #include "Sprite.h"
 
-Anim::Anim( short* anim )
-{
-	mAnim = anim;
-	mNumFrame = mAnim[0];
-	mCurrentFrame = 0;
-	mLastFrameTime = 0;
-	mPaintedFrameCount = 0;
-}
-
-void Anim::ResetAnim()
-{
-	mCurrentFrame = 0;
-	mLastFrameTime = 0;
-	mPaintedFrameCount = 0;
-}
-
-
 Sprite::Sprite( unsigned short* modules, short** frames, Anim** anims, ImageCover* imageCover )
 {
 	mModules = modules;
@@ -55,11 +38,29 @@ void Sprite::PaintAnim( int animId, int x, int y, unsigned long currentTimeMilli
 		anim->mLastFrameTime = currentTimeMillis;
 	}
 	else
-	{		
+	{	
+		/* one frame per step
 		if( ( currentTimeMillis - anim->mLastFrameTime ) > anim_data[anim->mCurrentFrame * 4 + 4] )
 		{
 			anim->mCurrentFrame++;
 			anim->mLastFrameTime = currentTimeMillis;
+		}
+		*/
+
+		if( ( currentTimeMillis - anim->mLastFrameTime ) > anim_data[anim->mCurrentFrame * 4 + 4] )
+		{
+			int num_frame_to_skip = 1;
+			int tmp_current_frame = anim->mCurrentFrame;
+			unsigned long frame_time_sum = anim_data[tmp_current_frame * 4 + 4];
+			while( ( frame_time_sum + anim_data[((tmp_current_frame+1)%anim->mNumFrame) * 4 + 4] ) < ( currentTimeMillis - anim->mLastFrameTime ) )
+			{
+				frame_time_sum += anim_data[(tmp_current_frame+1) * 4 + 4];
+				num_frame_to_skip++;				
+				tmp_current_frame = (tmp_current_frame+1)%anim->mNumFrame;
+			}
+			
+			anim->mCurrentFrame += num_frame_to_skip;			
+			anim->mLastFrameTime = currentTimeMillis - ( currentTimeMillis - anim->mLastFrameTime ) + frame_time_sum;
 		}
 	}
 		

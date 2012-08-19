@@ -7,6 +7,10 @@ using namespace std;
 float gScreenWidth;
 float gScreenHeight;
 
+float gScreenOutputWidth;
+float gScreenOutPutHeight;
+float gScreenScaleRatio;
+
 GameState* gGameState;
 stack<GameState*> gGameStateStack;
 

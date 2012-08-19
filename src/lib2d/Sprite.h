@@ -2,18 +2,7 @@
 #define __SPRITE__
 
 #include "ImageCover.h"
-
-struct Anim
-{
-	int mCurrentFrame;
-	int mNumFrame;
-	unsigned long mLastFrameTime;
-	int mPaintedFrameCount;
-	short* mAnim;
-
-	Anim( short* anim );
-	void ResetAnim();
-};
+#include "Anim.h"
 
 /* idea of sprite structure
 
