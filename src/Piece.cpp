@@ -1,14 +1,18 @@
 #include "Piece.h"
 
-Piece::Piece( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId )
-{
-	mSprite = sprite;
-	mStateStandAnimId = stateStandAnimId;
-	mStateMovingAnimId = stateMovingAnimId;
+Piece::Piece()
+{	
 }
 
 Piece::~Piece()
 {
+}
+
+void Piece::Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId )
+{
+	mSprite = sprite;
+	mStateStandAnimId = stateStandAnimId;
+	mStateMovingAnimId = stateMovingAnimId;
 }
 
 void Piece::Paint( int state, float x, float y )

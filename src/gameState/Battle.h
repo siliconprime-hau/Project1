@@ -7,12 +7,12 @@
 
 enum BATTLE_LEVEL//game difficult level
 {
-
+	BATTLE_LEVEL_1 = 0
 };
 
 enum BATTLE_LEVEL_SUB_MODE//game level sub mode 
 {
-
+	BATTLE_LEVEL_SUB_MODE_1 = 0
 };
 
 class Battle: public GameState

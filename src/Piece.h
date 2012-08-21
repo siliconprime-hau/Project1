@@ -1,7 +1,7 @@
 #ifndef __PIECE__
 #define __PIECE__
 
-#include "Sprite.h"
+#include "l2d.h"
 
 enum PieceState
 {
@@ -14,8 +14,9 @@ struct Piece
 	Sprite* mSprite;
 	int mStateStandAnimId, mStateMovingAnimId;
 
-	Piece( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId );
+	Piece();
 	~Piece();
+	void Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId );
 	void Paint( int state, float x, float y );
 };
 
