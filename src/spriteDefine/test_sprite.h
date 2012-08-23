@@ -27,13 +27,13 @@ short frame3[] =
 {
 	2,
 	2, 0, 0,
-	1, 129, 0,
+	1, 0, 0,
 };
 short frame4[] =
 {
 	2,
-	0, -103,	-79,
-    1,	26,	-17
+	0, 0,	0,
+    1,	0,	0
 };
 
 short* testFrames[] =
@@ -48,24 +48,30 @@ short* testFrames[] =
 short anim1_data[] =
 {
 	3,
-	0, 0, 0, 10,
+	0, 0, 0, 20,
 	1, 0, 0, 20,
-	2, 0, 0, 10
+	2, 0, 0, 20
 };
 short anim2_data[] =
 {
 	3,
-	0, 0, 0, 500,
-	2, 0, 0, 240,
-	1, 0, 0, 500
+	0, 0, 0, 20,
+	2, 0, 0, 20,
+	1, 0, 0, 20
 };
 short anim3_data[] =
 {
 	2,
-	1, 0, 0, 500,
-	2, 0, 0, 500
+	1, 0, 0, 20,
+	2, 0, 0, 20
 };
 short anim4_data[] =
+{
+	2,
+	2, 0, 0, 20,
+	3, 0, 0, 20
+};
+short anim5_data[] =
 {
 	2,
 	2, 0, 0, 500,
@@ -75,11 +81,13 @@ Anim* anim1 = new Anim( anim1_data );
 Anim* anim2 = new Anim( anim2_data );
 Anim* anim3 = new Anim( anim3_data );
 Anim* anim4 = new Anim( anim4_data );
+Anim* anim5 = new Anim( anim5_data );
 
 Anim* testAnims[] =
 {
 	anim1,
 	anim2,
 	anim3,
-	anim4
+	anim4,
+	anim5
 };

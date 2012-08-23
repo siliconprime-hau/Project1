@@ -15,6 +15,13 @@ enum BATTLE_LEVEL_SUB_MODE//game level sub mode
 	BATTLE_LEVEL_SUB_MODE_1 = 0
 };
 
+struct PieceHolder
+{
+	float mPosX, mPosY;
+	int mCurrentRow, mCurrentColumn;
+	Piece* mPiece;	
+};
+
 class Battle: public GameState
 {
 public:
@@ -25,8 +32,11 @@ public:
 	void Init( int level, int levelSubMode );
 
 private:
-	Map* mMap;
-	Piece* mPieces;
+	Map* mMap;	
+	PieceHolder* mPieceHolders;
+	
+	void PaintRC( PieceHolder pieceHolder );//paint by current row/column
+	void PaintXY( PieceHolder pieceHolder );//paint by posx/poxy
 };
 
 #endif //__SSP__

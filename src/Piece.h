@@ -13,11 +13,14 @@ struct Piece
 {
 	Sprite* mSprite;
 	int mStateStandAnimId, mStateMovingAnimId;
+	int mState;
 
 	Piece();
 	~Piece();
 	void Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId );
-	void Paint( int state, float x, float y );
+	void Paint( float x, float y );
+	void PaintA( float x, float y, int anchor_h, int anchor_v );
+	void SetState( int state );
 };
 
 #endif //__PIECE__

@@ -65,6 +65,9 @@ public:
 
 	void PaintModule( int moduleId, int x, int y );
 	void PaintFrame( int frameId, int x, int y );
+
+	void PaintModuleA( int moduleId, int x, int y, int anchor_h, int anchor_v );
+	void PaintFrameA( int frameId, int x, int y, int anchor_h, int anchor_v );
 	
 	/*
 	update anim by time
@@ -77,6 +80,7 @@ public:
 	};
 	*/
 	void PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis );
+	void PaintAnimA( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v );
 
 	/*
 	update anim by frame
@@ -89,6 +93,7 @@ public:
 	};
 	*/
 	void PaintAnim( int animId, int x, int y );
+	void PaintAnimA( int animId, int x, int y, int anchor_h, int anchor_v );
 };
 
 #endif //__SPRITE__

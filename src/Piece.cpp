@@ -13,16 +13,27 @@ void Piece::Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId )
 	mSprite = sprite;
 	mStateStandAnimId = stateStandAnimId;
 	mStateMovingAnimId = stateMovingAnimId;
+	mState = PIECE_STATE_STAND;
 }
 
-void Piece::Paint( int state, float x, float y )
+void Piece::SetState( int state )
 {
-	if( state == PIECE_STATE_STAND )
+	mState = state;
+}
+
+void Piece::Paint( float x, float y )
+{
+	PaintA( x, y, ANCHOR_CENTER, ANCHOR_CENTER );//default anchor is center
+}
+
+void Piece::PaintA( float x, float y, int anchor_h, int anchor_v )
+{
+	if( mState == PIECE_STATE_STAND )
 	{
-		mSprite->PaintAnim( mStateStandAnimId, x, y );
+		mSprite->PaintAnimA( mStateStandAnimId, x, y, anchor_h, anchor_v );
 	}
-	else if( state == PIECE_STATE_MOVING )
+	else if( mState == PIECE_STATE_MOVING )
 	{
-		mSprite->PaintAnim( mStateMovingAnimId, x, y );
+		mSprite->PaintAnimA( mStateMovingAnimId, x, y, anchor_h, anchor_v );
 	}
 }

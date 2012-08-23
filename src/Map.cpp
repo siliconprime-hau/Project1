@@ -5,7 +5,7 @@
 #include "Globals.h"
 
 	int X = LINK;
-	int B = UNLINK;
+	int Y = UNLINK;
 	
 	unsigned char tmp[24][24] =//4 row/6 column
 	{
@@ -92,6 +92,16 @@ void Map::SetPaintZone( float x, float y, float w, float h )
 	mYPos = y;
 	mWidth = w;
 	mHeight = h;
+}
+
+float Map::RowToY( int row )
+{
+	return mYPos + mHeight/(mNumRow-1)*row;
+}
+
+float Map::ColumnToX( int column )
+{
+	return mXPos + mWidth/(mNumColumn-1)*column;
 }
 
 void Map::PaintMap()

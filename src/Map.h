@@ -17,6 +17,8 @@ public:
 
 	void SetPaintZone( float x, float y, float w, float h );
 	void PaintMap();
+	float RowToY( int row );
+	float ColumnToX( int column );
 
 private:
 	int mNumRow, mNumColumn;

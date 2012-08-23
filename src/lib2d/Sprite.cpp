@@ -14,20 +14,35 @@ Sprite::~Sprite()
 
 void Sprite::PaintModule( int moduleId, int x, int y )
 {	
-	mImageCover->Paint( x, y, mModules[moduleId*4], mModules[moduleId*4 + 1], mModules[moduleId*4 +2], mModules[moduleId*4 + 3] );
+	PaintModuleA( moduleId, x, y, ANCHOR_LEFT, ANCHOR_TOP );
+}
+
+void Sprite::PaintModuleA( int moduleId, int x, int y, int anchor_h, int anchor_v )
+{	
+	mImageCover->PaintA( x, y, mModules[moduleId*4], mModules[moduleId*4 + 1], mModules[moduleId*4 +2], mModules[moduleId*4 + 3], anchor_h, anchor_v );
 }
 
 void Sprite::PaintFrame( int frameId, int x, int y )
+{
+	PaintFrameA( frameId, x, y, ANCHOR_LEFT, ANCHOR_TOP );
+}
+
+void Sprite::PaintFrameA( int frameId, int x, int y, int anchor_h, int anchor_v )
 {
 	short* frame = mFrames[frameId];
 
 	for( int i = 0; i < frame[0]; i ++ )
 	{
-		PaintModule( frame[i*3 + 1], frame[i*3 + 2] + x, frame[i*3 + 3] + y );
+		PaintModuleA( frame[i*3 + 1], frame[i*3 + 2] + x, frame[i*3 + 3] + y, anchor_h, anchor_v );
 	}
 }
 
 void Sprite::PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis )
+{
+	PaintAnimA( animId, x, y, currentTimeMillis, ANCHOR_LEFT, ANCHOR_TOP );
+}
+
+void Sprite::PaintAnimA( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v )
 {
 	Anim* anim = mAnims[animId];
 	short* anim_data = anim->mAnim;
@@ -66,10 +81,15 @@ void Sprite::PaintAnim( int animId, int x, int y, unsigned long currentTimeMilli
 		
 	anim->mCurrentFrame = anim->mCurrentFrame%anim->mNumFrame;
 
-	PaintFrame( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y );
+	PaintFrameA( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y, anchor_h, anchor_v );
 }
 
 void Sprite::PaintAnim( int animId, int x, int y )
+{
+	PaintAnimA( animId, x, y, ANCHOR_LEFT, ANCHOR_TOP );
+}
+
+void Sprite::PaintAnimA( int animId, int x, int y, int anchor_h, int anchor_v )
 {
 	Anim* anim = mAnims[animId];
 	short* anim_data = anim->mAnim;
@@ -83,5 +103,5 @@ void Sprite::PaintAnim( int animId, int x, int y )
 	anim->mPaintedFrameCount++;
 	anim->mCurrentFrame = anim->mCurrentFrame%anim->mNumFrame;
 
-	PaintFrame( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y );
+	PaintFrameA( anim_data[anim->mCurrentFrame * 4 + 1], anim_data[anim->mCurrentFrame * 4 + 2] + x,  anim_data[anim->mCurrentFrame * 4 + 3] + y, anchor_h, anchor_v );
 }
