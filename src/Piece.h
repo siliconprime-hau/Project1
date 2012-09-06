@@ -20,7 +20,8 @@ struct Piece
 	void Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId );
 	void Paint( float x, float y );
 	void PaintA( float x, float y, int anchor_h, int anchor_v );
-	void SetState( int state );
+	void SetState( int state ){ mState = state; }
+	int GetState(){ return mState; }
 };
 
 #endif //__PIECE__

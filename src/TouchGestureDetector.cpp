@@ -43,123 +43,127 @@ bool is_current_inside( TouchGestureHolder touch, float x, float y, float w, flo
 
 
 
+TouchGestureHolder mTouchGSList[NUM_POINTER_MAX];
 
-void TouchGestureDetector::Update()
+namespace TouchGestureDetector
 {
-	//reset proccessed touch
-	for( int i = 0; i < NUM_POINTER_MAX; i++ )
+	void Update()
 	{
-		if( mTouchGSList[i].mTouchGSType == TOUCH_UP )
+		//reset proccessed touch
+		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			mTouchGSList[i].Clear();
-		}
-	}
-
-	for( int i = 0; i < gTouchQueueProgressing.size(); i++ )
-	{
-		TouchHolder touch = gPopTouch( gTouchQueueProgressing );
-		if( touch.mTouchType == TOUCH_DOWN )//add new touch
-		{
-			for( int j = 0; j < NUM_POINTER_MAX; j++ )
+			if( mTouchGSList[i].mTouchGSType == TOUCH_UP )
 			{
-				if( mTouchGSList[j].mTouchGSType == TOUCH_INACTIVE )
+				mTouchGSList[i].Clear();
+			}
+		}
+
+		for( int i = 0; i < gTouchQueueProgressing.size(); i++ )
+		{
+			TouchHolder touch = gPopTouch( gTouchQueueProgressing );
+			if( touch.mTouchType == TOUCH_DOWN )//add new touch
+			{
+				for( int j = 0; j < NUM_POINTER_MAX; j++ )
 				{
-					mTouchGSList[j].mTouchGSId = touch.mTouchId;
-					mTouchGSList[j].mTouchGSType = TOUCH_DOWN;
-					mTouchGSList[j].mDownX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
-					mTouchGSList[j].mDownY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
-					break;
+					if( mTouchGSList[j].mTouchGSType == TOUCH_INACTIVE )
+					{
+						mTouchGSList[j].mTouchGSId = touch.mTouchId;
+						mTouchGSList[j].mTouchGSType = TOUCH_DOWN;
+						mTouchGSList[j].mDownX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
+						mTouchGSList[j].mDownY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
+						break;
+					}
+				}
+			}
+			else//update exist touch
+			{
+				for( int j = 0; j < NUM_POINTER_MAX; j++ )
+				{
+					if( mTouchGSList[j].mTouchGSId == touch.mTouchId )
+					{					
+						mTouchGSList[j].mTouchGSType = touch.mTouchType;
+						mTouchGSList[j].mUpX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
+						mTouchGSList[j].mUpY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
+						break;
+					}
 				}
 			}
 		}
-		else//update exist touch
+	}
+
+	bool isClick( float x, float y, float w, float h )
+	{
+		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			for( int j = 0; j < NUM_POINTER_MAX; j++ )
+			if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
+				( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= TOUCH_CLICK_TIME )
 			{
-				if( mTouchGSList[j].mTouchGSId == touch.mTouchId )
-				{					
-					mTouchGSList[j].mTouchGSType = touch.mTouchType;
-					mTouchGSList[j].mUpX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
-					mTouchGSList[j].mUpY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
-					break;
+				if( is_down_inside( mTouchGSList[i], x, y, w, h ) && is_up_inside( mTouchGSList[i], x, y, w, h ) )
+				{
+					return true;
 				}
 			}
 		}
-	}
-}
 
-bool TouchGestureDetector::isClick( float x, float y, float w, float h )
-{
-	for( int i = 0; i < NUM_POINTER_MAX; i++ )
-	{
-		if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
-			( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= TOUCH_CLICK_TIME )
-		{
-			if( is_down_inside( mTouchGSList[i], x, y, w, h ) && is_up_inside( mTouchGSList[i], x, y, w, h ) )
-			{
-				return true;
-			}
-		}
+		return false;
 	}
 
-	return false;
-}
-
-bool TouchGestureDetector::isPress( float x, float y, float w, float h )
-{
-	for( int i = 0; i < NUM_POINTER_MAX; i++ )
+	bool isPress( float x, float y, float w, float h )
 	{
-		if( ( mTouchGSList[i].mTouchGSType == TOUCH_DOWN ) || ( mTouchGSList[i].mTouchGSType == TOUCH_MOVE ) )
+		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			if( is_down_inside( mTouchGSList[i], x, y, w, h ) || is_current_inside( mTouchGSList[i], x, y, w, h ) )
+			if( ( mTouchGSList[i].mTouchGSType == TOUCH_DOWN ) || ( mTouchGSList[i].mTouchGSType == TOUCH_MOVE ) )
 			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-int TouchGestureDetector::isFling( float x, float y, float w, float h )
-{
-	for( int i = 0; i < NUM_POINTER_MAX; i++ )
-	{
-		if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
-			( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= FLING_TIME )
-		{
-			if( is_down_inside( mTouchGSList[i], x, y, w, h ) &&
-				( sqrt(	pow( mTouchGSList[i].mUpX - mTouchGSList[i].mDownX, 2 ) +
-						pow( mTouchGSList[i].mUpY - mTouchGSList[i].mDownY, 2 ) ) >= FLING_RANGE ) )
-			{
-				float delta_x = mTouchGSList[i].mUpX - mTouchGSList[i].mDownX;
-				float delta_y = mTouchGSList[i].mUpY - mTouchGSList[i].mDownY;
-
-				if( fabs( delta_x ) > fabs( delta_y ) )//left/right
+				if( is_down_inside( mTouchGSList[i], x, y, w, h ) || is_current_inside( mTouchGSList[i], x, y, w, h ) )
 				{
-					if( delta_x > 0 )
-					{
-						return FLING_RIGHT;
-					}
-					else
-					{
-						return FLING_LEFT;
-					}
+					return true;
 				}
-				else//up/down
-				{
-					if( delta_y > 0 )
-					{
-						return FLING_DOWN;
-					}
-					else
-					{
-						return FLING_UP;
-					}
-				}												
 			}
 		}
+
+		return false;
 	}
 
-	return FLING_NONE;
+	int isFling( float x, float y, float w, float h )
+	{
+		for( int i = 0; i < NUM_POINTER_MAX; i++ )
+		{
+			if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
+				( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= FLING_TIME )
+			{
+				if( is_down_inside( mTouchGSList[i], x, y, w, h ) &&
+					( sqrt(	pow( mTouchGSList[i].mUpX - mTouchGSList[i].mDownX, 2 ) +
+							pow( mTouchGSList[i].mUpY - mTouchGSList[i].mDownY, 2 ) ) >= FLING_RANGE ) )
+				{
+					float delta_x = mTouchGSList[i].mUpX - mTouchGSList[i].mDownX;
+					float delta_y = mTouchGSList[i].mUpY - mTouchGSList[i].mDownY;
+
+					if( fabs( delta_x ) > fabs( delta_y ) )//left/right
+					{
+						if( delta_x > 0 )
+						{
+							return FLING_RIGHT;
+						}
+						else
+						{
+							return FLING_LEFT;
+						}
+					}
+					else//up/down
+					{
+						if( delta_y > 0 )
+						{
+							return FLING_DOWN;
+						}
+						else
+						{
+							return FLING_UP;
+						}
+					}												
+				}
+			}
+		}
+
+		return FLING_NONE;
+	}
 }

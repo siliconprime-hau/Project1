@@ -16,11 +16,6 @@ void Piece::Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId )
 	mState = PIECE_STATE_STAND;
 }
 
-void Piece::SetState( int state )
-{
-	mState = state;
-}
-
 void Piece::Paint( float x, float y )
 {
 	PaintA( x, y, ANCHOR_CENTER, ANCHOR_CENTER );//default anchor is center

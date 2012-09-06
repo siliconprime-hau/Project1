@@ -19,6 +19,8 @@ public:
 	void PaintMap();
 	float RowToY( int row );
 	float ColumnToX( int column );
+	int GetNumRow(){ return mNumRow; }
+	int GetNumColumn(){ return mNumColumn; }
 
 private:
 	int mNumRow, mNumColumn;

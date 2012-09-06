@@ -6,6 +6,10 @@
 #include "Globals.h"
 #include "Level.h"
 
+#include "TouchGestureDetector.h"
+
+using namespace TouchGestureDetector;
+
 Battle::Battle()
 {	
 }
@@ -141,17 +145,19 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 		pieceHolder.mPosX == mMap->ColumnToX( pieceHolder.mNextColumn ) )
 	{
 		pieceHolder.isMoving = false;
+		pieceHolder.mPiece->SetState( PIECE_STATE_STAND );
 		pieceHolder.mCurrentColumn = pieceHolder.mNextColumn;
 		pieceHolder.mCurrentRow = pieceHolder.mNextRow;
-		printf( "stop time: %d\n", gCurrentTimeMillis );
+		//printf( "stop time: %d\n", gCurrentTimeMillis );
 	}
 }
 
 void Battle::StartMoving( PieceHolder &pieceHolder )
 {
 	pieceHolder.isMoving = true;
-	pieceHolder.mLastMovingTime = gCurrentTimeMillis;
-	printf( "start time: %d\n", gCurrentTimeMillis );
+	pieceHolder.mPiece->SetState( PIECE_STATE_MOVING );
+	pieceHolder.mLastMovingTime = gCurrentTimeMillis;	
+	//printf( "start time: %d\n", gCurrentTimeMillis );
 }
 
 void Battle::SetPosXY( PieceHolder &pieceHolder, float posX, float posY )
@@ -187,21 +193,48 @@ void Battle::PaintXY( PieceHolder pieceHolder )
 }
 
 void Battle::Update()
-{
-	if( gTouchQueueProgressing.size() > 0 )
+{	
+	if( TouchGestureDetector::isClick( 0, 0, 100, 100 ) )
 	{
-		if( mPieceHolders[0].mCurrentRow == 0 )
+		if( mPieceHolders[0].mPiece->GetState() == PIECE_STATE_MOVING )
 		{
-			SetNextPosRC( mPieceHolders[0], 2, 0 );
+			mPieceHolders[0].mPiece->SetState( PIECE_STATE_STAND );
 		}
 		else
 		{
-			SetNextPosRC( mPieceHolders[0], 0, 0 );
+			mPieceHolders[0].mPiece->SetState( PIECE_STATE_MOVING );
 		}
-		if( mPieceHolders[0].isMoving == false )
+	}
+
+
+	int tmp = TouchGestureDetector::isFling( 0, 0, gScreenWidth, gScreenHeight );
+	if( mPieceHolders[0].isMoving == false && tmp != FLING_NONE )
+	{	
+		if( tmp == FLING_DOWN )
 		{
-			StartMoving( mPieceHolders[0] );
+			SetNextPosRC( mPieceHolders[0],
+				(mPieceHolders[0].mCurrentRow + 1)<mMap->GetNumRow()?(mPieceHolders[0].mCurrentRow + 1):mMap->GetNumRow()-1,
+				mPieceHolders[0].mCurrentColumn );
 		}
+		else if( tmp == FLING_UP )
+		{
+			SetNextPosRC( mPieceHolders[0],
+				(mPieceHolders[0].mCurrentRow - 1)>=0?(mPieceHolders[0].mCurrentRow - 1):0,
+				mPieceHolders[0].mCurrentColumn );
+		}
+		else if( tmp == FLING_LEFT )
+		{
+			SetNextPosRC( mPieceHolders[0],
+				mPieceHolders[0].mCurrentRow,
+				(mPieceHolders[0].mCurrentColumn - 1)>=0?(mPieceHolders[0].mCurrentColumn - 1):0 );
+		}
+		else if( tmp == FLING_RIGHT )
+		{
+			SetNextPosRC( mPieceHolders[0],
+				mPieceHolders[0].mCurrentRow,
+				(mPieceHolders[0].mCurrentColumn + 1)<mMap->GetNumColumn()?(mPieceHolders[0].mCurrentColumn + 1):mMap->GetNumColumn()-1 );
+		}
+		StartMoving( mPieceHolders[0] );
 	}
 
 	//for( int i = 0; i< tmp_num_piece; i++ )
