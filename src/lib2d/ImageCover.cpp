@@ -52,6 +52,7 @@ ImageCover::ImageCover( unsigned char* buffer, int len )
 
 ImageCover::~ImageCover()
 {
+	//TODO nvhau: need to delete texture or not?
 }
 
 void ImageCover::PaintA
@@ -124,7 +125,7 @@ void ImageCover::PaintA
 	mVisibleWidth = scr_w;
 	mVisibleHeight = scr_h;
 
-	GLfloat* vertices = gGenRect( scr_x, scr_y, scr_w, scr_h );
+	GLfloat* vertices = gnGenRect( scr_x, scr_y, scr_w, scr_h );
 	GLushort indices[] = { 0, 1, 2, 0, 2, 3 };
 
 	glVertexAttribPointer( gTexPositionLoc, 2, GL_FLOAT, GL_FALSE, 0, vertices );	

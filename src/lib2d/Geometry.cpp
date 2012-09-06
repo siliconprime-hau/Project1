@@ -25,7 +25,7 @@ void DrawRect( float x, float y, float w, float h, unsigned int color )//color s
 	esMatrixMultiply( &gMvpMatrix, &gModelView, &gOrthor );
 	glUniformMatrix4fv( gGeoMvpLoc, 1, GL_FALSE, (GLfloat*) &gMvpMatrix.m[0][0] );
 	
-	GLfloat* vertices = gGenRect( x, y, w, h );    
+	GLfloat* vertices = gnGenRect( x, y, w, h );    
 	GLfloat* vColor = ParseColor( color );
 		
 	glVertexAttribPointer ( gGeoPositionLoc, 2, GL_FLOAT, GL_FALSE, 0, vertices );

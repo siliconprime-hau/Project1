@@ -4,6 +4,7 @@
 #include "l2d.h"
 #include "Res.h"
 #include "Globals.h"
+#include "Level.h"
 
 Battle::Battle()
 {	
@@ -11,6 +12,8 @@ Battle::Battle()
 
 Battle::~Battle()
 {
+	delete mMap;
+	delete[] mPieceHolders;
 }
 
 int tmp_num_piece = 8;
@@ -36,9 +39,10 @@ void Battle::Init( int level, int levelSubMode )
 	}
 
 	//raw init
-	mPieceHolders[0].mPiece->Init( piece_sprite, 0, 1 );
+	mPieceHolders[0].mPiece->Init( piece_sprite, 4, 1 );
 	mPieceHolders[0].mCurrentRow = 0;
 	mPieceHolders[0].mCurrentColumn = 0;
+	SetPosRC( mPieceHolders[0], 0, 0 );
 
 	mPieceHolders[1].mPiece->Init( piece_sprite, 1, 2 );
 	mPieceHolders[1].mCurrentRow = 0;
@@ -56,7 +60,7 @@ void Battle::Init( int level, int levelSubMode )
 	mPieceHolders[4].mCurrentRow = 2;
 	mPieceHolders[4].mCurrentColumn = 4;
 
-	mPieceHolders[5].mPiece->Init( piece_sprite, 3, 1 );
+	mPieceHolders[5].mPiece->Init( piece_sprite, 2, 1 );
 	mPieceHolders[5].mCurrentRow = 3;
 	mPieceHolders[5].mCurrentColumn = 0;
 
@@ -64,10 +68,112 @@ void Battle::Init( int level, int levelSubMode )
 	mPieceHolders[6].mCurrentRow = 3;
 	mPieceHolders[6].mCurrentColumn = 1;
 
-	mPieceHolders[7].mPiece->Init( piece_sprite, 0, 1 );
+	mPieceHolders[7].mPiece->Init( piece_sprite, 2, 1 );
 	mPieceHolders[7].mCurrentRow = 3;
 	mPieceHolders[7].mCurrentColumn = 5;
 
+}
+
+void Battle::UpdateMoving( PieceHolder &pieceHolder )
+{
+	float move_distance = (PIECE_MOVE_SPEED*gScreenHeight)*(gCurrentTimeMillis - pieceHolder.mLastMovingTime)/1000;
+	//printf( "current time: %d, last time: %d, move distance: %f\n", gCurrentTimeMillis, pieceHolder.mLastMovingTime, move_distance );
+	pieceHolder.mLastMovingTime = gCurrentTimeMillis;
+	
+
+	if( pieceHolder.mCurrentRow < pieceHolder.mNextRow )
+	{
+		if( pieceHolder.mPosY + move_distance < mMap->RowToY( pieceHolder.mNextRow ) )
+		{
+			pieceHolder.mPosY += move_distance;
+		}
+		else
+		{
+			pieceHolder.mPosY = mMap->RowToY( pieceHolder.mNextRow );
+		}
+	}
+	else if( pieceHolder.mCurrentRow > pieceHolder.mNextRow )
+	{
+		if( pieceHolder.mPosY - move_distance > mMap->RowToY( pieceHolder.mNextRow ) )
+		{
+			pieceHolder.mPosY -= move_distance;
+		}
+		else
+		{
+			pieceHolder.mPosY = mMap->RowToY( pieceHolder.mNextRow );
+		}
+	}
+	/*else
+	{
+		pieceHolder.mPosY = mMap->RowToY( pieceHolder.mNextRow );
+	}*/
+	
+	if( pieceHolder.mCurrentColumn < pieceHolder.mNextColumn )
+	{
+		if( pieceHolder.mPosX + move_distance < mMap->ColumnToX( pieceHolder.mNextColumn ) )
+		{
+			pieceHolder.mPosX += move_distance;
+		}
+		else
+		{
+			pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
+		}
+	}
+	else if( pieceHolder.mCurrentColumn > pieceHolder.mNextColumn )
+	{
+		if( pieceHolder.mPosX - move_distance > mMap->ColumnToX( pieceHolder.mNextColumn ) )
+		{
+			pieceHolder.mPosX -= move_distance;
+		}
+		else
+		{
+			pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
+		}
+	}
+	/*else
+	{
+		pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
+	}*/
+
+	//printf( "pos x: %f, pos y: %f\n", pieceHolder.mPosX, pieceHolder.mPosY );
+
+	if(	pieceHolder.mPosY == mMap->RowToY( pieceHolder.mNextRow ) &&
+		pieceHolder.mPosX == mMap->ColumnToX( pieceHolder.mNextColumn ) )
+	{
+		pieceHolder.isMoving = false;
+		pieceHolder.mCurrentColumn = pieceHolder.mNextColumn;
+		pieceHolder.mCurrentRow = pieceHolder.mNextRow;
+		printf( "stop time: %d\n", gCurrentTimeMillis );
+	}
+}
+
+void Battle::StartMoving( PieceHolder &pieceHolder )
+{
+	pieceHolder.isMoving = true;
+	pieceHolder.mLastMovingTime = gCurrentTimeMillis;
+	printf( "start time: %d\n", gCurrentTimeMillis );
+}
+
+void Battle::SetPosXY( PieceHolder &pieceHolder, float posX, float posY )
+{
+	pieceHolder.mPosX = posX;
+	pieceHolder.mPosY = posY;
+}
+
+void Battle::SetPosRC( PieceHolder &pieceHolder, int row, int column )
+{
+	pieceHolder.mCurrentRow = row;
+	pieceHolder.mCurrentColumn = column;
+	pieceHolder.mNextRow = row;
+	pieceHolder.mNextColumn = column;
+	pieceHolder.mPosX = mMap->ColumnToX( column );
+	pieceHolder.mPosY = mMap->RowToY( row );
+}
+
+void Battle::SetNextPosRC( PieceHolder &pieceHolder, int row, int column )
+{
+	pieceHolder.mNextRow = row;
+	pieceHolder.mNextColumn = column;
 }
 
 void Battle::PaintRC( PieceHolder pieceHolder )
@@ -80,12 +186,45 @@ void Battle::PaintXY( PieceHolder pieceHolder )
 	pieceHolder.mPiece->Paint( pieceHolder.mPosX, pieceHolder.mPosY );
 }
 
+void Battle::Update()
+{
+	if( gTouchQueueProgressing.size() > 0 )
+	{
+		if( mPieceHolders[0].mCurrentRow == 0 )
+		{
+			SetNextPosRC( mPieceHolders[0], 2, 0 );
+		}
+		else
+		{
+			SetNextPosRC( mPieceHolders[0], 0, 0 );
+		}
+		if( mPieceHolders[0].isMoving == false )
+		{
+			StartMoving( mPieceHolders[0] );
+		}
+	}
+
+	//for( int i = 0; i< tmp_num_piece; i++ )
+	{
+		if( mPieceHolders[0].isMoving )
+		{
+			UpdateMoving( mPieceHolders[0] );
+		}
+	}
+}
+
 void Battle::Render()
 {
 	mMap->PaintMap();
 	for( int i = 0; i< tmp_num_piece; i++ )
-	{				
-		//mPieceHolders[2].mPiece->Paint( 100, 100 );
-		PaintRC( mPieceHolders[i] );
+	{						
+		if( mPieceHolders[i].isMoving )
+		{
+			PaintXY( mPieceHolders[i] );
+		}
+		else
+		{
+			PaintRC( mPieceHolders[i] );
+		}
 	}	
 }

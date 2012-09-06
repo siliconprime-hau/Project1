@@ -3,13 +3,17 @@
 
 #include "GameState.h"
 #include <stack>
+#include <queue>
+
+using namespace std;
+
+
+
 
 #define SCREEN_SIMULATE_HEIGHT	640.0f//sceeen heigth for caculate process
 
-#define LEVEL_MENU_PANEL_WIDTH	0.3f//30% of screen height
-#define LEVEL_MAP_PADDING		0.05f//5% of screen height
 
-using namespace std;
+
 
 //screen size for cacualte process
 extern float gScreenWidth;
@@ -19,18 +23,45 @@ extern float gScreenOutputWidth;
 extern float gScreenOutPutHeight;
 extern float gScreenScaleRatio;
 
+extern unsigned long gCurrentTimeMillis;
+
+
+
+
 extern GameState* gGameState;
 extern stack<GameState*> gGameStateStack;
 
 void gPushState( GameState* gameState );
 GameState* gPopState();
 
+
+
+
 enum TOUCH_TYPE
-{
+{	
 	TOUCH_DOWN = 0,
 	TOUCH_UP,
 	TOUCH_MOVE
 };
+
+struct TouchHolder
+{
+	int mTouchId, mTouchType;
+	float mTouchPosX, mTouchPosY;
+	TouchHolder( int id, int type, float x, float y )
+	{
+		mTouchId = id;
+		mTouchType = type;
+		mTouchPosX = x;
+		mTouchPosY = y;
+	}
+};
+
+extern queue<TouchHolder> gTouchQueuePending;
+extern queue<TouchHolder> gTouchQueueProgressing;
+
+void gPushTouch( queue<TouchHolder> &touchQueue, TouchHolder touchHolder );
+TouchHolder gPopTouch( queue<TouchHolder> &touchQueue );
 
 
 
@@ -57,6 +88,9 @@ enum ENEMY_TYPE
 	ENEMY_TYPE_VERTICAL_R2,
 	ENEMY_TYPE_HORIZONTAL_R2
 };
+
+
+
 
 //bridge type
 enum BRIDGE_TYPE

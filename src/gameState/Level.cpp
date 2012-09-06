@@ -6,6 +6,7 @@ Level::Level()
 
 Level::~Level()
 {
+	delete mBattle;
 }
 
 void Level::Init()
@@ -14,11 +15,12 @@ void Level::Init()
 	mBattle->Init( 0, 0 );
 }
 
+void Level::Update()
+{
+	mBattle->Update();
+}
+
 void Level::Render()
 {
 	mBattle->Render();
-}
-
-void Level::Update( unsigned long timeMillis )
-{
 }

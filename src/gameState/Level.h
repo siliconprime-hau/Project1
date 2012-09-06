@@ -2,15 +2,24 @@
 #define __LEVEL__
 
 #include "Battle.h"
+#include "GameState.h"
 
-class Level
+
+
+#define LEVEL_MENU_PANEL_WIDTH	0.3f//30% of screen height
+#define LEVEL_MAP_PADDING		0.05f//5% of screen height
+
+
+
+
+class Level: public GameState
 {
 public:
 	Level();
 	~Level();
 	void Init();
+	void Update();
 	void Render();
-	void Update( unsigned long timeMillis );
 
 private:
 	Battle* mBattle;
