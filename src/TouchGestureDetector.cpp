@@ -67,6 +67,8 @@ namespace TouchGestureDetector
 				{
 					if( mTouchGSList[j].mTouchGSType == TOUCH_INACTIVE )
 					{
+						mTouchGSList[j].mDownTime = gCurrentTimeMillis;
+
 						mTouchGSList[j].mTouchGSId = touch.mTouchId;
 						mTouchGSList[j].mTouchGSType = TOUCH_DOWN;
 						mTouchGSList[j].mDownX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
@@ -81,6 +83,11 @@ namespace TouchGestureDetector
 				{
 					if( mTouchGSList[j].mTouchGSId == touch.mTouchId )
 					{					
+						if( touch.mTouchType == TOUCH_UP )
+						{
+							mTouchGSList[j].mUpTime = gCurrentTimeMillis;
+						}
+
 						mTouchGSList[j].mTouchGSType = touch.mTouchType;
 						mTouchGSList[j].mUpX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
 						mTouchGSList[j].mUpY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;

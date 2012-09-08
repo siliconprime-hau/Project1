@@ -2,7 +2,7 @@
 #define __TOUCHGESTUREDETECTOR__
 
 #define TOUCH_INACTIVE		-1
-#define TOUCH_CLICK_TIME	100//milli second
+#define TOUCH_CLICK_TIME	250//milli second
 
 struct TouchGestureHolder
 {
@@ -31,7 +31,7 @@ struct TouchGestureHolder
 #define NUM_POINTER_MAX		10
 
 #define FLING_RANGE			50//pixel
-#define FLING_TIME			500//milli second
+#define FLING_TIME			750//milli second
 
 enum FLING_TYPE
 {
