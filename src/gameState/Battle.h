@@ -58,6 +58,11 @@ private:
 	void StartMoving( PieceHolder &pieceHolder );
 	void PaintRC( PieceHolder pieceHolder );//paint by current row/column
 	void PaintXY( PieceHolder pieceHolder );//paint by posx/poxy
+
+	void MoveUp( PieceHolder &pieceHolder );
+	void MoveDown( PieceHolder &pieceHolder );
+	void MoveLeft( PieceHolder &pieceHolder );
+	void MoveRight( PieceHolder &pieceHolder );
 };
 
 #endif //__SSP__

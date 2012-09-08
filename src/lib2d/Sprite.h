@@ -79,8 +79,8 @@ public:
 		0, 10, 20, 100
 	};
 	*/
-	void PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis );
-	void PaintAnimA( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v );
+	void PaintAnimByTime( int animId, int x, int y, unsigned long currentTimeMillis );
+	void PaintAnimAByTime( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v );
 
 	/*
 	update anim by frame

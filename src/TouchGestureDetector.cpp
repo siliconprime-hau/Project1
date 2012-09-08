@@ -43,7 +43,7 @@ bool is_current_inside( TouchGestureHolder touch, float x, float y, float w, flo
 
 
 
-TouchGestureHolder mTouchGSList[NUM_POINTER_MAX];
+TouchGestureHolder gTouchGSList[NUM_POINTER_MAX];
 
 namespace TouchGestureDetector
 {
@@ -52,9 +52,9 @@ namespace TouchGestureDetector
 		//reset proccessed touch
 		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			if( mTouchGSList[i].mTouchGSType == TOUCH_UP )
+			if( gTouchGSList[i].mTouchGSType == TOUCH_UP )
 			{
-				mTouchGSList[i].Clear();
+				gTouchGSList[i].Clear();
 			}
 		}
 
@@ -65,14 +65,14 @@ namespace TouchGestureDetector
 			{
 				for( int j = 0; j < NUM_POINTER_MAX; j++ )
 				{
-					if( mTouchGSList[j].mTouchGSType == TOUCH_INACTIVE )
+					if( gTouchGSList[j].mTouchGSType == TOUCH_INACTIVE )
 					{
-						mTouchGSList[j].mDownTime = gCurrentTimeMillis;
+						gTouchGSList[j].mDownTime = gCurrentTimeMillis;
 
-						mTouchGSList[j].mTouchGSId = touch.mTouchId;
-						mTouchGSList[j].mTouchGSType = TOUCH_DOWN;
-						mTouchGSList[j].mDownX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
-						mTouchGSList[j].mDownY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
+						gTouchGSList[j].mTouchGSId = touch.mTouchId;
+						gTouchGSList[j].mTouchGSType = TOUCH_DOWN;
+						gTouchGSList[j].mDownX = gTouchGSList[j].mCurrentX = touch.mTouchPosX;
+						gTouchGSList[j].mDownY = gTouchGSList[j].mCurrentY = touch.mTouchPosY;
 						break;
 					}
 				}
@@ -81,16 +81,16 @@ namespace TouchGestureDetector
 			{
 				for( int j = 0; j < NUM_POINTER_MAX; j++ )
 				{
-					if( mTouchGSList[j].mTouchGSId == touch.mTouchId )
+					if( gTouchGSList[j].mTouchGSId == touch.mTouchId )
 					{					
 						if( touch.mTouchType == TOUCH_UP )
 						{
-							mTouchGSList[j].mUpTime = gCurrentTimeMillis;
+							gTouchGSList[j].mUpTime = gCurrentTimeMillis;
 						}
 
-						mTouchGSList[j].mTouchGSType = touch.mTouchType;
-						mTouchGSList[j].mUpX = mTouchGSList[j].mCurrentX = touch.mTouchPosX;
-						mTouchGSList[j].mUpY = mTouchGSList[j].mCurrentY = touch.mTouchPosY;
+						gTouchGSList[j].mTouchGSType = touch.mTouchType;
+						gTouchGSList[j].mUpX = gTouchGSList[j].mCurrentX = touch.mTouchPosX;
+						gTouchGSList[j].mUpY = gTouchGSList[j].mCurrentY = touch.mTouchPosY;
 						break;
 					}
 				}
@@ -102,10 +102,10 @@ namespace TouchGestureDetector
 	{
 		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
-				( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= TOUCH_CLICK_TIME )
+			if(	gTouchGSList[i].mTouchGSType == TOUCH_UP &&
+				( gTouchGSList[i].mUpTime - gTouchGSList[i].mDownTime ) <= TOUCH_CLICK_TIME )
 			{
-				if( is_down_inside( mTouchGSList[i], x, y, w, h ) && is_up_inside( mTouchGSList[i], x, y, w, h ) )
+				if( is_down_inside( gTouchGSList[i], x, y, w, h ) && is_up_inside( gTouchGSList[i], x, y, w, h ) )
 				{
 					return true;
 				}
@@ -119,9 +119,9 @@ namespace TouchGestureDetector
 	{
 		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			if( ( mTouchGSList[i].mTouchGSType == TOUCH_DOWN ) || ( mTouchGSList[i].mTouchGSType == TOUCH_MOVE ) )
+			if( ( gTouchGSList[i].mTouchGSType == TOUCH_DOWN ) || ( gTouchGSList[i].mTouchGSType == TOUCH_MOVE ) )
 			{
-				if( is_down_inside( mTouchGSList[i], x, y, w, h ) || is_current_inside( mTouchGSList[i], x, y, w, h ) )
+				if( is_down_inside( gTouchGSList[i], x, y, w, h ) || is_current_inside( gTouchGSList[i], x, y, w, h ) )
 				{
 					return true;
 				}
@@ -135,15 +135,15 @@ namespace TouchGestureDetector
 	{
 		for( int i = 0; i < NUM_POINTER_MAX; i++ )
 		{
-			if(	mTouchGSList[i].mTouchGSType == TOUCH_UP &&
-				( mTouchGSList[i].mUpTime - mTouchGSList[i].mDownTime ) <= FLING_TIME )
+			if(	gTouchGSList[i].mTouchGSType == TOUCH_UP &&
+				( gTouchGSList[i].mUpTime - gTouchGSList[i].mDownTime ) <= FLING_TIME )
 			{
-				if( is_down_inside( mTouchGSList[i], x, y, w, h ) &&
-					( sqrt(	pow( mTouchGSList[i].mUpX - mTouchGSList[i].mDownX, 2 ) +
-							pow( mTouchGSList[i].mUpY - mTouchGSList[i].mDownY, 2 ) ) >= FLING_RANGE ) )
+				if( is_down_inside( gTouchGSList[i], x, y, w, h ) &&
+					( sqrt(	pow( gTouchGSList[i].mUpX - gTouchGSList[i].mDownX, 2 ) +
+							pow( gTouchGSList[i].mUpY - gTouchGSList[i].mDownY, 2 ) ) >= FLING_RANGE ) )
 				{
-					float delta_x = mTouchGSList[i].mUpX - mTouchGSList[i].mDownX;
-					float delta_y = mTouchGSList[i].mUpY - mTouchGSList[i].mDownY;
+					float delta_x = gTouchGSList[i].mUpX - gTouchGSList[i].mDownX;
+					float delta_y = gTouchGSList[i].mUpY - gTouchGSList[i].mDownY;
 
 					if( fabs( delta_x ) > fabs( delta_y ) )//left/right
 					{

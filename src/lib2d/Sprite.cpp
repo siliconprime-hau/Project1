@@ -37,12 +37,12 @@ void Sprite::PaintFrameA( int frameId, int x, int y, int anchor_h, int anchor_v 
 	}
 }
 
-void Sprite::PaintAnim( int animId, int x, int y, unsigned long currentTimeMillis )
+void Sprite::PaintAnimByTime( int animId, int x, int y, unsigned long currentTimeMillis )
 {
-	PaintAnimA( animId, x, y, currentTimeMillis, ANCHOR_LEFT, ANCHOR_TOP );
+	PaintAnimAByTime( animId, x, y, currentTimeMillis, ANCHOR_LEFT, ANCHOR_TOP );
 }
 
-void Sprite::PaintAnimA( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v )
+void Sprite::PaintAnimAByTime( int animId, int x, int y, unsigned long currentTimeMillis, int anchor_h, int anchor_v )
 {
 	Anim* anim = mAnims[animId];
 	short* anim_data = anim->mAnim;

@@ -51,3 +51,21 @@ TouchHolder gPopTouch( queue<TouchHolder> &touchQueue )
 
 	return touch_holder;
 }
+
+
+
+queue<KeyHolder> gKeyQueuePending;
+queue<KeyHolder> gKeyQueueProgressing;
+
+void gPushKey( queue<KeyHolder> &keyQueue, KeyHolder keyHolder )
+{
+	keyQueue.push(keyHolder);
+}
+
+KeyHolder gPopKey( queue<KeyHolder> &keyQueue )
+{
+	KeyHolder key_holder = keyQueue.front();
+	keyQueue.pop();
+
+	return key_holder;
+}

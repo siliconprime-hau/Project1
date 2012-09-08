@@ -65,6 +65,40 @@ TouchHolder gPopTouch( queue<TouchHolder> &touchQueue );
 
 
 
+enum KEY_TYPE
+{
+	KEY_INACTIVE = -1,
+	KEY_DOWN,
+	KEY_UP
+};
+
+struct KeyHolder
+{
+	int mKeyCode, mKeyType;
+	
+	KeyHolder()
+	{
+		mKeyCode = mKeyType = KEY_INACTIVE;
+	}
+	
+	KeyHolder( int keyCode, int keyType )
+	{
+		mKeyCode = keyCode;
+		mKeyType = keyType;
+	}
+
+	void Clear()
+	{
+		mKeyCode = mKeyType = KEY_INACTIVE;
+	}
+};
+
+extern queue<KeyHolder> gKeyQueuePending;
+extern queue<KeyHolder> gKeyQueueProgressing;
+
+void gPushKey( queue<KeyHolder> &keyQueue, KeyHolder keyHolder );
+KeyHolder gPopKey( queue<KeyHolder> &keyQueue );
+
 
 //enemy type
 enum ENEMY_TYPE

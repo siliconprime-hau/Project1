@@ -42,7 +42,7 @@ enum FLING_TYPE
 	FLING_RIGHT
 };
 
-extern TouchGestureHolder mTouchGSList[NUM_POINTER_MAX];
+extern TouchGestureHolder gTouchGSList[NUM_POINTER_MAX];
 
 namespace TouchGestureDetector
 {

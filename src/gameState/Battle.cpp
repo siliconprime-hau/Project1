@@ -1,14 +1,18 @@
 #include "Battle.h"
 #include <stdlib.h>
-#include "spriteDefine/test_sprite.h"
+#include "spriteDefine/spriteCharacters.h"
 #include "l2d.h"
 #include "Res.h"
 #include "Globals.h"
 #include "Level.h"
 
 #include "TouchGestureDetector.h"
+#include "KeyEventMng.h"
+
+#include <Windows.h>
 
 using namespace TouchGestureDetector;
+using namespace KeyEventMng;
 
 Battle::Battle()
 {	
@@ -33,8 +37,8 @@ void Battle::Init( int level, int levelSubMode )
 						gScreenHeight - gScreenHeight*LEVEL_MAP_PADDING*2
 						);
 	
-	ImageCover* test_sprite_img = new ImageCover( gResImage[TEST_SPRITE] );
-	Sprite* piece_sprite = new Sprite( testModules, testFrames, testAnims, test_sprite_img );
+	ImageCover* characters_sprite_img = new ImageCover( gResImage[CHARACTERS_SPRITE] );
+	Sprite* piece_sprite = new Sprite( charModules, charFrames, charAnims, characters_sprite_img );
 	
 	for( int i = 0; i< tmp_num_piece; i++ )
 	{		
@@ -43,39 +47,45 @@ void Battle::Init( int level, int levelSubMode )
 	}
 
 	//raw init
-	mPieceHolders[0].mPiece->Init( piece_sprite, 4, 1 );
+	mPieceHolders[0].mPiece->Init( piece_sprite, 26, 24 );
 	mPieceHolders[0].mCurrentRow = 0;
 	mPieceHolders[0].mCurrentColumn = 0;
 	SetPosRC( mPieceHolders[0], 0, 0 );
 
-	mPieceHolders[1].mPiece->Init( piece_sprite, 1, 2 );
+	mPieceHolders[1].mPiece->Init( piece_sprite, 0, 25 );
 	mPieceHolders[1].mCurrentRow = 0;
 	mPieceHolders[1].mCurrentColumn = 2;
+	SetPosRC( mPieceHolders[1], 0, 2 );
 
-	mPieceHolders[2].mPiece->Init( piece_sprite, 2, 3 );
+	mPieceHolders[2].mPiece->Init( piece_sprite, 1, 25 );
 	mPieceHolders[2].mCurrentRow = 0;
 	mPieceHolders[2].mCurrentColumn = 4;
+	SetPosRC( mPieceHolders[2], 0, 4 );
 
-	mPieceHolders[3].mPiece->Init( piece_sprite, 1, 3 );
+	mPieceHolders[3].mPiece->Init( piece_sprite, 2, 25 );
 	mPieceHolders[3].mCurrentRow = 2;
 	mPieceHolders[3].mCurrentColumn = 1;
+	SetPosRC( mPieceHolders[3], 2, 1 );
 
-	mPieceHolders[4].mPiece->Init( piece_sprite, 2, 1 );
+	mPieceHolders[4].mPiece->Init( piece_sprite, 3, 25 );
 	mPieceHolders[4].mCurrentRow = 2;
 	mPieceHolders[4].mCurrentColumn = 4;
+	SetPosRC( mPieceHolders[4], 2, 4 );
 
-	mPieceHolders[5].mPiece->Init( piece_sprite, 2, 1 );
+	mPieceHolders[5].mPiece->Init( piece_sprite, 4, 25 );
 	mPieceHolders[5].mCurrentRow = 3;
 	mPieceHolders[5].mCurrentColumn = 0;
+	SetPosRC( mPieceHolders[5], 3, 0 );
 
-	mPieceHolders[6].mPiece->Init( piece_sprite, 0, 1 );
+	mPieceHolders[6].mPiece->Init( piece_sprite, 5, 25 );
 	mPieceHolders[6].mCurrentRow = 3;
 	mPieceHolders[6].mCurrentColumn = 1;
+	SetPosRC( mPieceHolders[6], 3, 1 );
 
-	mPieceHolders[7].mPiece->Init( piece_sprite, 2, 1 );
+	mPieceHolders[7].mPiece->Init( piece_sprite, 6, 25 );
 	mPieceHolders[7].mCurrentRow = 3;
 	mPieceHolders[7].mCurrentColumn = 5;
-
+	SetPosRC( mPieceHolders[7], 3, 5 );
 }
 
 void Battle::UpdateMoving( PieceHolder &pieceHolder )
@@ -192,9 +202,39 @@ void Battle::PaintXY( PieceHolder pieceHolder )
 	pieceHolder.mPiece->Paint( pieceHolder.mPosX, pieceHolder.mPosY );
 }
 
+
+void Battle::MoveUp( PieceHolder &pieceHolder )
+{
+	SetNextPosRC( pieceHolder,
+				(pieceHolder.mCurrentRow - 1)>=0?(pieceHolder.mCurrentRow - 1):0,
+				pieceHolder.mCurrentColumn );
+}
+
+void Battle::MoveDown( PieceHolder &pieceHolder )
+{
+	SetNextPosRC( pieceHolder,
+				(pieceHolder.mCurrentRow + 1)<mMap->GetNumRow()?(pieceHolder.mCurrentRow + 1):mMap->GetNumRow()-1,
+				pieceHolder.mCurrentColumn );
+}
+
+void Battle::MoveLeft( PieceHolder &pieceHolder )
+{
+	SetNextPosRC( pieceHolder,
+				pieceHolder.mCurrentRow,
+				(pieceHolder.mCurrentColumn - 1)>=0?(pieceHolder.mCurrentColumn - 1):0 );
+}
+
+void Battle::MoveRight( PieceHolder &pieceHolder )
+{
+	SetNextPosRC( pieceHolder,
+				pieceHolder.mCurrentRow,
+				(pieceHolder.mCurrentColumn + 1)<mMap->GetNumColumn()?(pieceHolder.mCurrentColumn + 1):mMap->GetNumColumn()-1 );
+}
+
+
 void Battle::Update()
 {	
-	if( TouchGestureDetector::isClick( 0, 0, 100, 100 ) )
+	/*if( TouchGestureDetector::isClick( 0, 0, 100, 100 ) )
 	{
 		if( mPieceHolders[0].mPiece->GetState() == PIECE_STATE_MOVING )
 		{
@@ -204,7 +244,8 @@ void Battle::Update()
 		{
 			mPieceHolders[0].mPiece->SetState( PIECE_STATE_MOVING );
 		}
-	}
+	}*/
+	bool tmp_is_move = false;
 
 
 	int tmp = TouchGestureDetector::isFling( 0, 0, gScreenWidth, gScreenHeight );
@@ -212,36 +253,82 @@ void Battle::Update()
 	{	
 		if( tmp == FLING_DOWN )
 		{
-			SetNextPosRC( mPieceHolders[0],
-				(mPieceHolders[0].mCurrentRow + 1)<mMap->GetNumRow()?(mPieceHolders[0].mCurrentRow + 1):mMap->GetNumRow()-1,
-				mPieceHolders[0].mCurrentColumn );
+			MoveDown(mPieceHolders[0]);
 		}
 		else if( tmp == FLING_UP )
 		{
-			SetNextPosRC( mPieceHolders[0],
-				(mPieceHolders[0].mCurrentRow - 1)>=0?(mPieceHolders[0].mCurrentRow - 1):0,
-				mPieceHolders[0].mCurrentColumn );
+			MoveUp(mPieceHolders[0]);
 		}
 		else if( tmp == FLING_LEFT )
 		{
-			SetNextPosRC( mPieceHolders[0],
-				mPieceHolders[0].mCurrentRow,
-				(mPieceHolders[0].mCurrentColumn - 1)>=0?(mPieceHolders[0].mCurrentColumn - 1):0 );
+			MoveLeft(mPieceHolders[0]);
 		}
 		else if( tmp == FLING_RIGHT )
 		{
-			SetNextPosRC( mPieceHolders[0],
-				mPieceHolders[0].mCurrentRow,
-				(mPieceHolders[0].mCurrentColumn + 1)<mMap->GetNumColumn()?(mPieceHolders[0].mCurrentColumn + 1):mMap->GetNumColumn()-1 );
+			MoveRight(mPieceHolders[0]);
 		}
 		StartMoving( mPieceHolders[0] );
+		tmp_is_move = true;
 	}
 
-	//for( int i = 0; i< tmp_num_piece; i++ )
+	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_UP ) == KEY_UP )
 	{
-		if( mPieceHolders[0].isMoving )
+		MoveUp(mPieceHolders[0]);
+		StartMoving( mPieceHolders[0] );
+		tmp_is_move = true;
+	}
+	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_DOWN ) == KEY_UP )
+	{
+		MoveDown(mPieceHolders[0]);
+		StartMoving( mPieceHolders[0] );
+		tmp_is_move = true;
+	}
+	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_LEFT ) == KEY_UP )
+	{
+		MoveLeft(mPieceHolders[0]);
+		StartMoving( mPieceHolders[0] );
+		tmp_is_move = true;
+	}
+	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_RIGHT ) == KEY_UP )
+	{
+		MoveRight(mPieceHolders[0]);
+		StartMoving( mPieceHolders[0] );
+		tmp_is_move = true;
+	}
+
+
+	//draft: random move enemy
+	for( int i = 1; i< tmp_num_piece; i++ )
+	{
+		if( mPieceHolders[i].isMoving == false && mPieceHolders[0].isMoving == true && tmp_is_move == true )
 		{
-			UpdateMoving( mPieceHolders[0] );
+			int tmp_direction = rand() % 4;
+			switch(tmp_direction)
+			{
+			case 0:
+				MoveUp(mPieceHolders[i]);
+				break;
+			case 1:
+				MoveDown(mPieceHolders[i]);
+				break;
+			case 2:
+				MoveLeft(mPieceHolders[i]);
+				break;
+			case 3:
+				MoveRight(mPieceHolders[i]);
+				break;
+			}
+			StartMoving( mPieceHolders[i] );
+		}
+	}
+
+
+
+	for( int i = 0; i< tmp_num_piece; i++ )
+	{
+		if( mPieceHolders[i].isMoving )
+		{
+			UpdateMoving( mPieceHolders[i] );
 		}
 	}
 }
@@ -249,7 +336,7 @@ void Battle::Update()
 void Battle::Render()
 {
 	mMap->PaintMap();
-	for( int i = 0; i< tmp_num_piece; i++ )
+	for( int i = tmp_num_piece - 1; i >= 0; i-- )
 	{						
 		if( mPieceHolders[i].isMoving )
 		{

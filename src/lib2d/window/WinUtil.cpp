@@ -56,18 +56,27 @@ LRESULT WINAPI MainWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		break;
 
 	case WM_KEYDOWN:
-			int fwKeys;
-			LPARAM keyData;
-			fwKeys = (int)wParam;    // virtual-key code 
-			keyData = lParam;          // key data 
-			switch(fwKeys)
+			int fwKeysDown;
+			LPARAM keyDataDown;
+			fwKeysDown = (int)wParam;    // virtual-key code 
+			keyDataDown = lParam;          // key data 
+			switch(fwKeysDown)
 			{
 				case VK_ESCAPE:
 						PostQuitMessage(0);
 					break;
 				default:
+					Game::Instance()->OnKeyEvent( fwKeysDown, KEY_DOWN );
 					break;
 			}
+		break;
+	case WM_KEYUP:
+			int fwKeysUp;
+			LPARAM keyDataUp;
+			fwKeysUp = (int)wParam;    // virtual-key code 
+			keyDataUp = lParam;          // key data 
+
+			Game::Instance()->OnKeyEvent( fwKeysUp, KEY_UP );
 		break;
 	default: 
 			lRet = DefWindowProc (hWnd, uMsg, wParam, lParam); 
