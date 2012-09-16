@@ -49,7 +49,8 @@ public:
 
 private:	
 	Map* mMap;	
-	PieceHolder* mPieceHolders;
+	PieceHolder* mEnemys;
+	PieceHolder mMainChar;
 	
 	void SetPosXY( PieceHolder &pieceHolder, float posX, float posY );
 	void SetPosRC( PieceHolder &pieceHolder, int row, int column );

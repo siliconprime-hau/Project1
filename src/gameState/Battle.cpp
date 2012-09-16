@@ -10,6 +10,7 @@
 #include "KeyEventMng.h"
 
 #include <Windows.h>
+#include <ctime>
 
 using namespace TouchGestureDetector;
 using namespace KeyEventMng;
@@ -21,75 +22,108 @@ Battle::Battle()
 Battle::~Battle()
 {
 	delete mMap;
-	delete[] mPieceHolders;
+	delete[] mEnemys;
 }
 
-int tmp_num_piece = 8;
+int tmp_num_enemy = 7;
 
 void Battle::Init( int level, int levelSubMode )
 {	
-	mMap = new Map( 4, 6 );	
-	mPieceHolders = new PieceHolder[tmp_num_piece];
+	mMap = new Map( 4, 6 );		
+	mEnemys = new PieceHolder[tmp_num_enemy];
 
 	mMap->SetPaintZone( gScreenHeight*LEVEL_MENU_PANEL_WIDTH + gScreenHeight*LEVEL_MAP_PADDING,
 						gScreenHeight*LEVEL_MAP_PADDING,
 						gScreenWidth - gScreenHeight*LEVEL_MENU_PANEL_WIDTH - gScreenHeight*LEVEL_MAP_PADDING*2,
 						gScreenHeight - gScreenHeight*LEVEL_MAP_PADDING*2
 						);
-	
+
+
+	//generate map
+	int tmp_map_num_row = mMap->GetNumRow();
+	int tmp_map_num_column = mMap->GetNumColumn();
+	srand(time(0));
+	for( int i = 0; i < tmp_map_num_row; i++ )
+	{
+		for( int j = 0; j < tmp_map_num_column; j++ )
+		{
+			int tmp_type = rand() % 2;
+
+			if( i < ( tmp_map_num_row - 1 ) )
+			{			
+				mMap->SetBridgeBoth( i, j, i + 1, j, tmp_type );
+			}
+
+			if( j < ( tmp_map_num_column - 1 ) )
+			{				
+				mMap->SetBridgeBoth( i, j, i, j + 1, tmp_type );
+			}
+		}
+	}
+			
 	ImageCover* characters_sprite_img = new ImageCover( gResImage[CHARACTERS_SPRITE] );
 	Sprite* piece_sprite = new Sprite( charModules, charFrames, charAnims, characters_sprite_img );
-	
-	for( int i = 0; i< tmp_num_piece; i++ )
+		
+	mMainChar.mPiece =  new Piece();
+	for( int i = 0; i< tmp_num_enemy; i++ )
 	{		
-		mPieceHolders[i].mPiece = new Piece();
-		//mPieceHolders[i].mPiece->Init( piece_sprite, 0, 1 );
+		mEnemys[i].mPiece = new Piece();
 	}
 
 	//raw init
-	mPieceHolders[0].mPiece->Init( piece_sprite, 26, 24 );
-	mPieceHolders[0].mCurrentRow = 0;
-	mPieceHolders[0].mCurrentColumn = 0;
-	SetPosRC( mPieceHolders[0], 0, 0 );
+	mMainChar.mPiece->Init( piece_sprite, 25, 24 );
+	mMainChar.mCurrentRow = 0;
+	mMainChar.mCurrentColumn = 0;
+	SetPosRC( mMainChar, 0, 0 );
 
-	mPieceHolders[1].mPiece->Init( piece_sprite, 0, 25 );
-	mPieceHolders[1].mCurrentRow = 0;
-	mPieceHolders[1].mCurrentColumn = 2;
-	SetPosRC( mPieceHolders[1], 0, 2 );
+	mEnemys[0].mPiece->Init( piece_sprite, 6, 25 );
+	mEnemys[0].mCurrentRow = 3;
+	mEnemys[0].mCurrentColumn = 5;
+	SetPosRC( mEnemys[7], 3, 5 );
 
-	mPieceHolders[2].mPiece->Init( piece_sprite, 1, 25 );
-	mPieceHolders[2].mCurrentRow = 0;
-	mPieceHolders[2].mCurrentColumn = 4;
-	SetPosRC( mPieceHolders[2], 0, 4 );
+	mEnemys[1].mPiece->Init( piece_sprite, 0, 25 );
+	mEnemys[1].mCurrentRow = 0;
+	mEnemys[1].mCurrentColumn = 2;
+	SetPosRC( mEnemys[1], 0, 2 );
 
-	mPieceHolders[3].mPiece->Init( piece_sprite, 2, 25 );
-	mPieceHolders[3].mCurrentRow = 2;
-	mPieceHolders[3].mCurrentColumn = 1;
-	SetPosRC( mPieceHolders[3], 2, 1 );
+	mEnemys[2].mPiece->Init( piece_sprite, 1, 25 );
+	mEnemys[2].mCurrentRow = 0;
+	mEnemys[2].mCurrentColumn = 4;
+	SetPosRC( mEnemys[2], 0, 4 );
 
-	mPieceHolders[4].mPiece->Init( piece_sprite, 3, 25 );
-	mPieceHolders[4].mCurrentRow = 2;
-	mPieceHolders[4].mCurrentColumn = 4;
-	SetPosRC( mPieceHolders[4], 2, 4 );
+	mEnemys[3].mPiece->Init( piece_sprite, 2, 25 );
+	mEnemys[3].mCurrentRow = 2;
+	mEnemys[3].mCurrentColumn = 1;
+	SetPosRC( mEnemys[3], 2, 1 );
 
-	mPieceHolders[5].mPiece->Init( piece_sprite, 4, 25 );
-	mPieceHolders[5].mCurrentRow = 3;
-	mPieceHolders[5].mCurrentColumn = 0;
-	SetPosRC( mPieceHolders[5], 3, 0 );
+	mEnemys[4].mPiece->Init( piece_sprite, 3, 25 );
+	mEnemys[4].mCurrentRow = 2;
+	mEnemys[4].mCurrentColumn = 4;
+	SetPosRC( mEnemys[4], 2, 4 );
 
-	mPieceHolders[6].mPiece->Init( piece_sprite, 5, 25 );
-	mPieceHolders[6].mCurrentRow = 3;
-	mPieceHolders[6].mCurrentColumn = 1;
-	SetPosRC( mPieceHolders[6], 3, 1 );
+	mEnemys[5].mPiece->Init( piece_sprite, 4, 25 );
+	mEnemys[5].mCurrentRow = 3;
+	mEnemys[5].mCurrentColumn = 0;
+	SetPosRC( mEnemys[5], 3, 0 );
 
-	mPieceHolders[7].mPiece->Init( piece_sprite, 6, 25 );
-	mPieceHolders[7].mCurrentRow = 3;
-	mPieceHolders[7].mCurrentColumn = 5;
-	SetPosRC( mPieceHolders[7], 3, 5 );
+	mEnemys[6].mPiece->Init( piece_sprite, 5, 25 );
+	mEnemys[6].mCurrentRow = 3;
+	mEnemys[6].mCurrentColumn = 1;
+	SetPosRC( mEnemys[6], 3, 1 );	
 }
 
 void Battle::UpdateMoving( PieceHolder &pieceHolder )
 {
+	if( mMap->isCanMove( pieceHolder.mCurrentRow, pieceHolder.mCurrentColumn, pieceHolder.mNextRow, pieceHolder.mNextColumn ) == false )
+	{
+		pieceHolder.isMoving = false;
+		pieceHolder.mPiece->SetState( PIECE_STATE_STAND );
+		pieceHolder.mNextColumn = pieceHolder.mCurrentColumn;
+		pieceHolder.mNextRow = pieceHolder.mCurrentRow;
+		
+		return;
+	}
+
 	float move_distance = (PIECE_MOVE_SPEED*gScreenHeight)*(gCurrentTimeMillis - pieceHolder.mLastMovingTime)/1000;
 	//printf( "current time: %d, last time: %d, move distance: %f\n", gCurrentTimeMillis, pieceHolder.mLastMovingTime, move_distance );
 	pieceHolder.mLastMovingTime = gCurrentTimeMillis;
@@ -236,99 +270,102 @@ void Battle::Update()
 {	
 	/*if( TouchGestureDetector::isClick( 0, 0, 100, 100 ) )
 	{
-		if( mPieceHolders[0].mPiece->GetState() == PIECE_STATE_MOVING )
+		if( mMainChar.mPiece->GetState() == PIECE_STATE_MOVING )
 		{
-			mPieceHolders[0].mPiece->SetState( PIECE_STATE_STAND );
+			mMainChar.mPiece->SetState( PIECE_STATE_STAND );
 		}
 		else
 		{
-			mPieceHolders[0].mPiece->SetState( PIECE_STATE_MOVING );
+			mMainChar.mPiece->SetState( PIECE_STATE_MOVING );
 		}
 	}*/
-	bool tmp_is_move = false;
+	bool tmp_is_start_move = false;
 
 
 	int tmp = TouchGestureDetector::isFling( 0, 0, gScreenWidth, gScreenHeight );
-	if( mPieceHolders[0].isMoving == false && tmp != FLING_NONE )
+	if( mMainChar.isMoving == false && tmp != FLING_NONE )
 	{	
 		if( tmp == FLING_DOWN )
 		{
-			MoveDown(mPieceHolders[0]);
+			MoveDown(mMainChar);
 		}
 		else if( tmp == FLING_UP )
 		{
-			MoveUp(mPieceHolders[0]);
+			MoveUp(mMainChar);
 		}
 		else if( tmp == FLING_LEFT )
 		{
-			MoveLeft(mPieceHolders[0]);
+			MoveLeft(mMainChar);
 		}
 		else if( tmp == FLING_RIGHT )
 		{
-			MoveRight(mPieceHolders[0]);
+			MoveRight(mMainChar);
 		}
-		StartMoving( mPieceHolders[0] );
-		tmp_is_move = true;
+		StartMoving( mMainChar );
+		tmp_is_start_move = true;
 	}
 
-	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_UP ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_UP ) == KEY_UP )
 	{
-		MoveUp(mPieceHolders[0]);
-		StartMoving( mPieceHolders[0] );
-		tmp_is_move = true;
+		MoveUp(mMainChar);
+		StartMoving( mMainChar );
+		tmp_is_start_move = true;
 	}
-	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_DOWN ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_DOWN ) == KEY_UP )
 	{
-		MoveDown(mPieceHolders[0]);
-		StartMoving( mPieceHolders[0] );
-		tmp_is_move = true;
+		MoveDown(mMainChar);
+		StartMoving( mMainChar );
+		tmp_is_start_move = true;
 	}
-	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_LEFT ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_LEFT ) == KEY_UP )
 	{
-		MoveLeft(mPieceHolders[0]);
-		StartMoving( mPieceHolders[0] );
-		tmp_is_move = true;
+		MoveLeft(mMainChar);
+		StartMoving( mMainChar );
+		tmp_is_start_move = true;
 	}
-	if( mPieceHolders[0].isMoving == false && KeyEventMng::GetKeyAction( VK_RIGHT ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_RIGHT ) == KEY_UP )
 	{
-		MoveRight(mPieceHolders[0]);
-		StartMoving( mPieceHolders[0] );
-		tmp_is_move = true;
+		MoveRight(mMainChar);
+		StartMoving( mMainChar );
+		tmp_is_start_move = true;
 	}
 
 
 	//draft: random move enemy
-	for( int i = 1; i< tmp_num_piece; i++ )
+	for( int i = 0; i< tmp_num_enemy; i++ )
 	{
-		if( mPieceHolders[i].isMoving == false && mPieceHolders[0].isMoving == true && tmp_is_move == true )
+		if( mEnemys[i].isMoving == false && mMainChar.isMoving == true && tmp_is_start_move == true )
 		{
 			int tmp_direction = rand() % 4;
 			switch(tmp_direction)
 			{
 			case 0:
-				MoveUp(mPieceHolders[i]);
+				MoveUp(mEnemys[i]);
 				break;
 			case 1:
-				MoveDown(mPieceHolders[i]);
+				MoveDown(mEnemys[i]);
 				break;
 			case 2:
-				MoveLeft(mPieceHolders[i]);
+				MoveLeft(mEnemys[i]);
 				break;
 			case 3:
-				MoveRight(mPieceHolders[i]);
+				MoveRight(mEnemys[i]);
 				break;
 			}
-			StartMoving( mPieceHolders[i] );
+			StartMoving( mEnemys[i] );
 		}
 	}
 
 
-
-	for( int i = 0; i< tmp_num_piece; i++ )
+	if( mMainChar.isMoving )
 	{
-		if( mPieceHolders[i].isMoving )
+		UpdateMoving( mMainChar );
+	}
+	for( int i = 0; i< tmp_num_enemy; i++ )
+	{
+		if( mEnemys[i].isMoving )
 		{
-			UpdateMoving( mPieceHolders[i] );
+			UpdateMoving( mEnemys[i] );
 		}
 	}
 }
@@ -336,15 +373,24 @@ void Battle::Update()
 void Battle::Render()
 {
 	mMap->PaintMap();
-	for( int i = tmp_num_piece - 1; i >= 0; i-- )
+	for( int i = 0; i< tmp_num_enemy; i++ )
 	{						
-		if( mPieceHolders[i].isMoving )
+		if( mEnemys[i].isMoving )
 		{
-			PaintXY( mPieceHolders[i] );
+			PaintXY( mEnemys[i] );
 		}
 		else
 		{
-			PaintRC( mPieceHolders[i] );
+			PaintRC( mEnemys[i] );
 		}
 	}	
+
+	if( mMainChar.isMoving )
+	{
+		PaintXY( mMainChar );
+	}
+	else
+	{
+		PaintRC( mMainChar );
+	}
 }

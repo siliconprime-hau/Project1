@@ -4,36 +4,36 @@
 //raw init
 #include "Globals.h"
 
-	int X = LINK;
-	int Y = UNLINK;
-	
-	unsigned char tmp[24][24] =//4 row/6 column
-	{
-		/*0*/	{	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*1*/	{	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*2*/	{	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*3*/	{	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*4*/	{	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*5*/	{	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*6*/	{	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*7*/	{	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*8*/	{	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*9*/	{	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0 },
-		/*10*/	{	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0 },
-		/*11*/	{	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0 },
-		/*12*/	{	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0 },
-		/*13*/	{	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0 },
-		/*14*/	{	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0 },
-		/*15*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0 },
-		/*16*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0 },
-		/*17*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X },
-		/*18*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0 },
-		/*19*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0 },
-		/*20*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0 },
-		/*21*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0 },
-		/*22*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X },
-		/*23*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0 }
-	};
+	//int X = LINK;
+	//int Y = UNLINK;
+	//
+	//unsigned char tmp[24][24] =//4 row/6 column
+	//{
+	//	/*0*/	{	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*1*/	{	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*2*/	{	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*3*/	{	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*4*/	{	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*5*/	{	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*6*/	{	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*7*/	{	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*8*/	{	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*9*/	{	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*10*/	{	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	0 },
+	//	/*11*/	{	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0 },
+	//	/*12*/	{	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0 },
+	//	/*13*/	{	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0 },
+	//	/*14*/	{	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0 },
+	//	/*15*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0,	0 },
+	//	/*16*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0,	0,	X,	0 },
+	//	/*17*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X },
+	//	/*18*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0 },
+	//	/*19*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0,	0 },
+	//	/*20*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0,	0 },
+	//	/*21*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X,	0 },
+	//	/*22*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0,	X },
+	//	/*23*/	{	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	X,	0,	0,	0,	0,	X,	0 }
+	//};
 
 
 Map::Map( int numRow, int numColumn )
@@ -41,12 +41,9 @@ Map::Map( int numRow, int numColumn )
 	mNumRow = numRow;
 	mNumColumn = numColumn;
 
-
-	//raw init	
-	mNumRow = 4;
-	mNumColumn = 6;
-	int tmp_row_column = 24;//row*column
+	int tmp_row_column = mNumRow * mNumColumn;
 	mMap = new unsigned char*[tmp_row_column];
+
 	for( int i = 0; i < tmp_row_column; i++ )
 	{
 		mMap[i] = new unsigned char[tmp_row_column];
@@ -54,27 +51,10 @@ Map::Map( int numRow, int numColumn )
 	for( int i = 0; i < tmp_row_column; i++ )
 	{
 		for( int j = 0; j < tmp_row_column; j++ )
-		{			
-			mMap[i][j] = tmp[i][j];			
+		{						
+			mMap[i][j] = BRIDGE_TYPE::UNBRIDGE;			
 		}
 	}
-
-	/*mMap = new unsigned char*[mNumRow];
-	for( int i = 0; i < mNumRow; i++ )
-	{
-		mMap[i] = new unsigned char[mNumColumn];
-	}
-
-	for( int i = 0; i < mNumRow; i++ )
-	{
-		for( int j = 0; j < mNumColumn; j++ )
-		{
-			if( i%2 == 0 && j%2 == 0)
-				mMap[i][j] = LINK;
-			else
-				mMap[i][j] = UNLINK;
-		}
-	}*/	
 }
 
 Map::~Map()
@@ -92,6 +72,84 @@ void Map::SetPaintZone( float x, float y, float w, float h )
 	mYPos = y;
 	mWidth = w;
 	mHeight = h;
+}
+
+int Map::RCToEdge( int row, int column )
+{
+	return mNumColumn*row + column;
+}
+
+int* Map::EdgeToRC( int edge )
+{
+	int tmp[2];
+
+	tmp[0] = edge/mNumColumn;
+	tmp[1] = edge%mNumColumn;
+
+	return tmp;
+}
+
+void Map::SetBridge( int row1, int column1, int row2, int column2, int bridgeType )
+{
+	int row = RCToEdge( row1, column1 );
+	int column = RCToEdge( row2, column2 );
+	mMap[row][column] = bridgeType;
+}
+
+void Map::SetBridgeBoth( int row1, int column1, int row2, int column2, int bridgeType )
+{
+	if( bridgeType == BRIDGE_TYPE::TWO_WAY_ALWAYS_ON )
+	{
+		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::TWO_WAY_ALWAYS_ON );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::TWO_WAY_ALWAYS_ON );
+	}
+	else if( bridgeType == BRIDGE_TYPE::TWO_WAY_ONE_TIME )
+	{
+		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::TWO_WAY_ONE_TIME );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::TWO_WAY_ONE_TIME );
+	}
+	else if( ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF ) )
+	{
+		SetBridge( row1, column1, row2, column2, bridgeType );
+		SetBridge( row2, column2, row1, column1, bridgeType );
+	}
+	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ALWAYS_ON )
+	{
+		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::ONE_WAY_ALWAYS_ON );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+	}
+	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ONE_TIME )
+	{
+		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::ONE_WAY_ONE_TIME );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+	}
+	else if( ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF ) )
+	{
+		SetBridge( row1, column1, row2, column2, bridgeType );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+	}
+	else if( bridgeType == BRIDGE_TYPE::UNBRIDGE )
+	{
+		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::UNBRIDGE );
+		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+	}
+}
+
+int Map::GetBridge( int row1, int column1, int row2, int column2 )
+{
+	int row = RCToEdge( row1, column1 );
+	int column = RCToEdge( row2, column2 );
+	return mMap[row][column];
+}
+
+bool Map::isCanMove( int row1, int column1, int row2, int column2 )
+{
+	int current_type = GetBridge( row1, column1, row2, column2 );
+
+	return !(	current_type == BRIDGE_TYPE::UNBRIDGE ||
+				current_type == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF ||
+				current_type == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF
+			);
 }
 
 float Map::RowToY( int row )
@@ -151,8 +209,7 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 	int tmp_point_2 = row2*mNumColumn + column2;	
 
 
-	//if( ( mMap[row1][column2] == LINK ) && ( mMap[row2][column1] == LINK ) )//two way link
-	if( ( mMap[tmp_point_1][tmp_point_2] == LINK ) && ( mMap[tmp_point_2][tmp_point_1] == LINK ) )//two way link
+	if( ( mMap[tmp_point_1][tmp_point_2] != BRIDGE_TYPE::UNBRIDGE ) && ( mMap[tmp_point_2][tmp_point_1] != BRIDGE_TYPE::UNBRIDGE ) )//two way link
 	{
 		DrawLine
 		(
@@ -161,8 +218,7 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 			COLOR_LINK
 		);
 	}
-	//else if( ( mMap[row1][column2] == UNLINK ) && ( mMap[row2][column1] == UNLINK) )//unlink
-	else if( ( mMap[tmp_point_1][tmp_point_2] == UNLINK ) && ( mMap[tmp_point_2][tmp_point_1] == UNLINK) )//unlink
+	else if( ( mMap[tmp_point_1][tmp_point_2] == BRIDGE_TYPE::UNBRIDGE ) && ( mMap[tmp_point_2][tmp_point_1] == BRIDGE_TYPE::UNBRIDGE) )//unlink
 	{
 		DrawLine
 		(
@@ -173,8 +229,7 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 	}
 	else//one way link
 	{
-		//if( mMap[row1][column2] == LINK )
-		if( mMap[tmp_point_1][tmp_point_2] == LINK )
+		if( mMap[tmp_point_1][tmp_point_2] != BRIDGE_TYPE::UNBRIDGE )
 		{
 			DrawLine
 			(

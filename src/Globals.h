@@ -10,7 +10,7 @@ using namespace std;
 
 
 
-#define SCREEN_SIMULATE_HEIGHT	640.0f//sceeen heigth for caculate process
+#define SCREEN_SIMULATE_HEIGHT	540.0f//sceeen heigth for caculate process
 
 
 
@@ -127,17 +127,17 @@ enum ENEMY_TYPE
 
 
 //bridge type
-enum BRIDGE_TYPE
-{
-	BRIDGE_TYPE_TWO_WAY_S1 = 0,//always available
-	BRIDGE_TYPE_ONE_WAY_S1,
-	BRIDGE_TYPE_NO_WAY_S1,
-	BRIDGE_TYPE_TWO_WAY_S2,//one time bridge
-	BRIDGE_TYPE_ONE_WAY_S2,
-	BRIDGE_TYPE_NO_WAY_S2,
-	BRIDGE_TYPE_TWO_WAY_S3,//on/off bridge
-	BRIDGE_TYPE_ONE_WAY_S3,
-	BRIDGE_TYPE_NO_WAY_S3
-};
+//enum BRIDGE_TYPE
+//{
+//	BRIDGE_TYPE_TWO_WAY_S1 = 0,//always available
+//	BRIDGE_TYPE_ONE_WAY_S1,
+//	BRIDGE_TYPE_NO_WAY_S1,
+//	BRIDGE_TYPE_TWO_WAY_S2,//one time bridge
+//	BRIDGE_TYPE_ONE_WAY_S2,
+//	BRIDGE_TYPE_NO_WAY_S2,
+//	BRIDGE_TYPE_TWO_WAY_S3,//on/off bridge
+//	BRIDGE_TYPE_ONE_WAY_S3,
+//	BRIDGE_TYPE_NO_WAY_S3
+//};
 
 #endif //__GLOBALS__

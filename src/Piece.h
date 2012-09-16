@@ -3,7 +3,7 @@
 
 #include "l2d.h"
 
-enum PieceState
+enum PIECE_STATE
 {
 	PIECE_STATE_STAND = 0,
 	PIECE_STATE_MOVING = 1

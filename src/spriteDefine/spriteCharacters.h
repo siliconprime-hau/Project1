@@ -264,147 +264,149 @@ short* charFrames[] =
 #define BLUE_FRAME_INDEX		25
 #define RED_FRAME_INDEX		26
 
+#define NUM_FRAME 1		//2: animate, 1: stand
+
 short charAnimData0[] =
 {
-	2,
+	NUM_FRAME,
 	0,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData1[] =
 {
-	2,
+	NUM_FRAME,
 	1,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData2[] =
 {
-	2,
+	NUM_FRAME,
 	2,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData3[] =
 {
-	2,
+	NUM_FRAME,
 	3,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData4[] =
 {
-	2,
+	NUM_FRAME,
 	4,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData5[] =
 {
-	2,
+	NUM_FRAME,
 	5,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData6[] =
 {
-	2,
+	NUM_FRAME,
 	6,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData7[] =
 {
-	2,
+	NUM_FRAME,
 	7,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData8[] =
 {
-	2,
+	NUM_FRAME,
 	8,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData9[] =
 {
-	2,
+	NUM_FRAME,
 	9,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData10[] =
 {
-	2,
+	NUM_FRAME,
 	10,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData11[] =
 {
-	2,
+	NUM_FRAME,
 	11,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData12[] =
 {
-	2,
+	NUM_FRAME,
 	12,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData13[] =
 {
-	2,
+	NUM_FRAME,
 	13,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData14[] =
 {
-	2,
+	NUM_FRAME,
 	14,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData15[] =
 {
-	2,
+	NUM_FRAME,
 	15,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData16[] =
 {
-	2,
+	NUM_FRAME,
 	16,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData17[] =
 {
-	2,
+	NUM_FRAME,
 	17,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData18[] =
 {
-	2,
+	NUM_FRAME,
 	18,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData19[] =
 {
-	2,
+	NUM_FRAME,
 	19,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData20[] =
 {
-	2,
+	NUM_FRAME,
 	20,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData21[] =
 {
-	2,
+	NUM_FRAME,
 	21,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData22[] =
 {
-	2,
+	NUM_FRAME,
 	22,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
 short charAnimData23[] =
 {
-	2,
+	NUM_FRAME,
 	23,					0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
@@ -413,19 +415,19 @@ short charAnimData23[] =
 
 short charAnimData62[] =//yellow - red
 {
-	2,
+	NUM_FRAME,
 	YELLOW_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME,
 	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
-short charAnimData63[] =//blue - red
+short charAnimData63[] =//red - blue
 {
-	2,
-	BLUE_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME,
-	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
+	NUM_FRAME,
+	RED_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME,
+	BLUE_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME	
 };
 short charAnimData64[] =//yellow - blue
 {
-	2,
+	NUM_FRAME,
 	YELLOW_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME,
 	BLUE_FRAME_INDEX,	0,	0,	ANIM_FRAME_OR_TIME
 };
@@ -457,7 +459,7 @@ Anim* charAnim22 = new Anim( charAnimData22 );
 Anim* charAnim23 = new Anim( charAnimData23 );
 
 Anim* charAnim62 = new Anim( charAnimData62 );//yellow - red
-Anim* charAnim63 = new Anim( charAnimData63 );//blue - red
+Anim* charAnim63 = new Anim( charAnimData63 );//red - blue
 Anim* charAnim64 = new Anim( charAnimData64 );//yellow - blue
 
 Anim* charAnims[] =
@@ -488,6 +490,6 @@ Anim* charAnims[] =
 	charAnim23,
 
 	charAnim62,//24 yellow - red
-	charAnim63,//25 blue - red
-	charAnim64//26 blue - red
+	charAnim63,//25 red - blue
+	charAnim64//26 yellow - blue
 };
