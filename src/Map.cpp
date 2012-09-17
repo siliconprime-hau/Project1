@@ -89,67 +89,125 @@ int* Map::EdgeToRC( int edge )
 	return tmp;
 }
 
-void Map::SetBridge( int row1, int column1, int row2, int column2, int bridgeType )
+void Map::SetRoad( int row1, int column1, int row2, int column2, int roadType )
 {
 	int row = RCToEdge( row1, column1 );
 	int column = RCToEdge( row2, column2 );
-	mMap[row][column] = bridgeType;
+	mMap[row][column] = roadType;
 }
 
-void Map::SetBridgeBoth( int row1, int column1, int row2, int column2, int bridgeType )
+void Map::SetBridge( int row1, int column1, int row2, int column2, int bridgeType )
 {
 	if( bridgeType == BRIDGE_TYPE::TWO_WAY_ALWAYS_ON )
 	{
-		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::TWO_WAY_ALWAYS_ON );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::TWO_WAY_ALWAYS_ON );
+		SetRoad( row1, column1, row2, column2, ROAD_ON );
+		SetRoad( row2, column2, row1, column1, ROAD_ON );
 	}
 	else if( bridgeType == BRIDGE_TYPE::TWO_WAY_ONE_TIME )
 	{
-		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::TWO_WAY_ONE_TIME );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::TWO_WAY_ONE_TIME );
+		SetRoad( row1, column1, row2, column2, ROAD_ONE_TIME );
+		SetRoad( row2, column2, row1, column1, ROAD_ONE_TIME );
 	}
 	else if( ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF ) )
 	{
-		SetBridge( row1, column1, row2, column2, bridgeType );
-		SetBridge( row2, column2, row1, column1, bridgeType );
+		if( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_ON )
+		{
+			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_ON );
+			SetRoad( row2, column2, row1, column1, ROAD_ONOFF_ON );
+		}
+		else//( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF )
+		{
+			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_OFF );
+			SetRoad( row2, column2, row1, column1, ROAD_ONOFF_OFF );
+		}
 	}
 	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ALWAYS_ON )
 	{
-		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::ONE_WAY_ALWAYS_ON );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+		SetRoad( row1, column1, row2, column2, ROAD_ON );
+		SetRoad( row2, column2, row1, column1, ROAD_OFF );
 	}
 	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ONE_TIME )
 	{
-		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::ONE_WAY_ONE_TIME );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+		SetRoad( row1, column1, row2, column2, ROAD_ONE_TIME );
+		SetRoad( row2, column2, row1, column1, ROAD_OFF );
 	}
 	else if( ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF ) )
 	{
-		SetBridge( row1, column1, row2, column2, bridgeType );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+		if( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_ON )
+		{
+			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_ON );
+			SetRoad( row2, column2, row1, column1, ROAD_OFF );
+		}
+		else//( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF )
+		{
+			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_OFF );
+			SetRoad( row2, column2, row1, column1, ROAD_OFF );
+		}
 	}
 	else if( bridgeType == BRIDGE_TYPE::UNBRIDGE )
 	{
-		SetBridge( row1, column1, row2, column2, BRIDGE_TYPE::UNBRIDGE );
-		SetBridge( row2, column2, row1, column1, BRIDGE_TYPE::UNBRIDGE );
+		SetRoad( row1, column1, row2, column2, ROAD_OFF );
+		SetRoad( row2, column2, row1, column1, ROAD_OFF );
 	}
 }
 
-int Map::GetBridge( int row1, int column1, int row2, int column2 )
+int Map::GetRoad( int row1, int column1, int row2, int column2 )
 {
 	int row = RCToEdge( row1, column1 );
 	int column = RCToEdge( row2, column2 );
 	return mMap[row][column];
 }
 
+int Map::GetBridge( int row1, int column1, int row2, int column2 )
+{
+	int road12 = GetRoad( row1, column1, row2, column2 );
+	int road21 = GetRoad( row2, column2, row1, column1 );
+
+	if( road12 == ROAD_OFF && road21 == ROAD_OFF )
+	{
+		return BRIDGE_TYPE::UNBRIDGE;
+	}
+	else if( road12 == ROAD_ON && road21 == ROAD_ON )
+	{
+		return BRIDGE_TYPE::TWO_WAY_ALWAYS_ON;
+	}
+	else if( road12 == ROAD_ON && road21 == ROAD_OFF )
+	{
+		return BRIDGE_TYPE::ONE_WAY_ALWAYS_ON;
+	}
+	else if( road12 == ROAD_ONE_TIME && road21 == ROAD_ONE_TIME )
+	{
+		return BRIDGE_TYPE::TWO_WAY_ONE_TIME;
+	}
+	else if( road12 == ROAD_ONE_TIME && road21 == ROAD_OFF )
+	{
+		return BRIDGE_TYPE::ONE_WAY_ONE_TIME;
+	}
+	else if( road12 == ROAD_ONOFF_ON && road21 == ROAD_ONOFF_ON )
+	{
+		return BRIDGE_TYPE::TWO_WAY_ONOFF_ON;
+	}
+	else if( road12 == ROAD_ONOFF_OFF && road21 == ROAD_ONOFF_OFF )
+	{
+		return BRIDGE_TYPE::TWO_WAY_ONOFF_OFF;
+	}
+	else if( road12 == ROAD_ONOFF_ON && road21 == ROAD_OFF )
+	{
+		return BRIDGE_TYPE::ONE_WAY_ONOFF_ON;
+	}
+	else if( road12 == ROAD_ONOFF_OFF && road21 == ROAD_OFF )
+	{
+		return BRIDGE_TYPE::ONE_WAY_ONOFF_OFF;
+	}
+
+	return BRIDGE_TYPE::UNBRIDGE;
+}
+
 bool Map::isCanMove( int row1, int column1, int row2, int column2 )
 {
-	int current_type = GetBridge( row1, column1, row2, column2 );
+	int current_type = GetRoad( row1, column1, row2, column2 );
 
-	return !(	current_type == BRIDGE_TYPE::UNBRIDGE ||
-				current_type == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF ||
-				current_type == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF
-			);
+	return !( current_type == ROAD_OFF || current_type == ROAD_ONOFF_OFF );
 }
 
 float Map::RowToY( int row )
@@ -202,23 +260,12 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 	else
 	{
 		row_height = 0;
-	}
-	
-	//battle to matrix
-	int tmp_point_1 = row1*mNumColumn + column1;
-	int tmp_point_2 = row2*mNumColumn + column2;	
+	}	
 
+	int bridge12 = GetBridge( row1, column1, row2, column2 );
+	int bridge21 = GetBridge( row2, column2, row1, column1 );
 
-	if( ( mMap[tmp_point_1][tmp_point_2] != BRIDGE_TYPE::UNBRIDGE ) && ( mMap[tmp_point_2][tmp_point_1] != BRIDGE_TYPE::UNBRIDGE ) )//two way link
-	{
-		DrawLine
-		(
-			column1 * column_width + mXPos, row1 * row_height + mYPos,
-			column2 * column_width + mXPos, row2 * row_height + mYPos,
-			COLOR_LINK
-		);
-	}
-	else if( ( mMap[tmp_point_1][tmp_point_2] == BRIDGE_TYPE::UNBRIDGE ) && ( mMap[tmp_point_2][tmp_point_1] == BRIDGE_TYPE::UNBRIDGE) )//unlink
+	if( bridge12 == UNBRIDGE )
 	{
 		DrawLine
 		(
@@ -227,41 +274,177 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 			COLOR_UNLINK
 		);
 	}
-	else//one way link
+	else if( bridge12 == TWO_WAY_ALWAYS_ON )
 	{
-		if( mMap[tmp_point_1][tmp_point_2] != BRIDGE_TYPE::UNBRIDGE )
-		{
-			DrawLine
-			(
-				column1 * column_width + mXPos, row1 * row_height + mYPos,
-				( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
-				( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
-				COLOR_LINK_START
-			);
-			DrawLine
-			(
-				( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
-				( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
-				column2 * column_width + mXPos, row2 * row_height + mYPos,
-				COLOR_LINK_END
-			);
-		}
-		else
-		{
-			DrawLine
-			(
-				column1 * column_width + mXPos, row1 * row_height + mYPos,
-				( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
-				( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
-				COLOR_LINK_END
-			);
-			DrawLine
-			(
-				( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
-				( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
-				column2 * column_width + mXPos, row2 * row_height + mYPos,
-				COLOR_LINK_START
-			);
-		}		
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK
+		);
+	}
+	else if( bridge12 == ONE_WAY_ALWAYS_ON )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_LINK
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_UNLINK
+		);
+	}
+	else if( bridge12 == TWO_WAY_ONE_TIME )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONE_TIME
+		);
+	}
+	else if( bridge12 == ONE_WAY_ONE_TIME )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_LINK_ONE_TIME
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_UNLINK
+		);
+	}
+	else if( bridge12 == TWO_WAY_ONOFF_ON )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONOFF_ON
+		);
+	}
+	else if( bridge12 == TWO_WAY_ONOFF_OFF )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONOFF_OFF
+		);
+	}
+	else if( bridge12 == ONE_WAY_ONOFF_ON )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_LINK_ONOFF_ON
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_UNLINK
+		);
+	}
+	else if( bridge12 == ONE_WAY_ONOFF_OFF )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_LINK_ONOFF_OFF
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_UNLINK
+		);
+	}
+	//--------------------------------------
+	else if( bridge21 == ONE_WAY_ALWAYS_ON )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_UNLINK
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK
+		);
+	}
+	else if( bridge21 == ONE_WAY_ONE_TIME )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_UNLINK
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONE_TIME
+		);
+	}
+	else if( bridge21 == ONE_WAY_ONOFF_ON )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_UNLINK
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONOFF_ON
+		);
+	}
+	else if( bridge21 == ONE_WAY_ONOFF_OFF )
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			COLOR_UNLINK
+		);
+		DrawLine
+		(
+			( ( column2 * column_width + mXPos ) + ( column1 * column_width + mXPos ) ) / 2,
+			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_LINK_ONOFF_OFF
+		);
 	}
 }

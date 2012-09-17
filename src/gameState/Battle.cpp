@@ -47,16 +47,16 @@ void Battle::Init( int level, int levelSubMode )
 	{
 		for( int j = 0; j < tmp_map_num_column; j++ )
 		{
-			int tmp_type = rand() % 2;
+			int tmp_type = rand() % 7;
 
 			if( i < ( tmp_map_num_row - 1 ) )
 			{			
-				mMap->SetBridgeBoth( i, j, i + 1, j, tmp_type );
+				mMap->SetBridge( i, j, i + 1, j, tmp_type );
 			}
 
 			if( j < ( tmp_map_num_column - 1 ) )
 			{				
-				mMap->SetBridgeBoth( i, j, i, j + 1, tmp_type );
+				mMap->SetBridge( i, j, i, j + 1, tmp_type );
 			}
 		}
 	}
@@ -125,9 +125,7 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 	}
 
 	float move_distance = (PIECE_MOVE_SPEED*gScreenHeight)*(gCurrentTimeMillis - pieceHolder.mLastMovingTime)/1000;
-	//printf( "current time: %d, last time: %d, move distance: %f\n", gCurrentTimeMillis, pieceHolder.mLastMovingTime, move_distance );
-	pieceHolder.mLastMovingTime = gCurrentTimeMillis;
-	
+	pieceHolder.mLastMovingTime = gCurrentTimeMillis;	
 
 	if( pieceHolder.mCurrentRow < pieceHolder.mNextRow )
 	{
@@ -182,9 +180,7 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 	{
 		pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
 	}*/
-
-	//printf( "pos x: %f, pos y: %f\n", pieceHolder.mPosX, pieceHolder.mPosY );
-
+	
 	if(	pieceHolder.mPosY == mMap->RowToY( pieceHolder.mNextRow ) &&
 		pieceHolder.mPosX == mMap->ColumnToX( pieceHolder.mNextColumn ) )
 	{
@@ -192,7 +188,6 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 		pieceHolder.mPiece->SetState( PIECE_STATE_STAND );
 		pieceHolder.mCurrentColumn = pieceHolder.mNextColumn;
 		pieceHolder.mCurrentRow = pieceHolder.mNextRow;
-		//printf( "stop time: %d\n", gCurrentTimeMillis );
 	}
 }
 
@@ -200,8 +195,7 @@ void Battle::StartMoving( PieceHolder &pieceHolder )
 {
 	pieceHolder.isMoving = true;
 	pieceHolder.mPiece->SetState( PIECE_STATE_MOVING );
-	pieceHolder.mLastMovingTime = gCurrentTimeMillis;	
-	//printf( "start time: %d\n", gCurrentTimeMillis );
+	pieceHolder.mLastMovingTime = gCurrentTimeMillis;		
 }
 
 void Battle::SetPosXY( PieceHolder &pieceHolder, float posX, float posY )
@@ -334,7 +328,7 @@ void Battle::Update()
 	//draft: random move enemy
 	for( int i = 0; i< tmp_num_enemy; i++ )
 	{
-		if( mEnemys[i].isMoving == false && mMainChar.isMoving == true && tmp_is_start_move == true )
+		if( mEnemys[i].isMoving == false && tmp_is_start_move == true )
 		{
 			int tmp_direction = rand() % 4;
 			switch(tmp_direction)
