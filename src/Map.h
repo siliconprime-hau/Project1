@@ -10,9 +10,6 @@
 #define COLOR_LINK_ONOFF_OFF		0x00FFFFFF
 #define COLOR_LINK_ONE_TIME			0xFF00FFFF
 
-#define COLOR_LINK_START	0x00FF00FF
-#define COLOR_LINK_END		0xFF0000FF
-
 
 enum BRIDGE_TYPE//the road between two edge
 {

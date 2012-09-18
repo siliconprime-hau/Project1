@@ -8,7 +8,7 @@
 
 
 
-#define PIECE_MOVE_SPEED		0.5//0.05 = 5% of screen height
+#define PIECE_MOVE_SPEED		0.5//0.05 = 5% of screen height per second
 
 
 
@@ -22,6 +22,14 @@ enum BATTLE_LEVEL_SUB_MODE//game level sub mode
 {
 	BATTLE_LEVEL_SUB_MODE_1 = 0
 };
+
+
+enum BATTLE_STATE
+{
+	BATTLE_STATE_STAND = 0,
+	BATTLE_STATE_MOVING
+};
+
 
 struct PieceHolder
 {
@@ -48,6 +56,7 @@ public:
 	void Render();
 
 private:	
+	int mCurrentState;
 	Map* mMap;	
 	PieceHolder* mEnemys;
 	PieceHolder mMainChar;
@@ -64,6 +73,9 @@ private:
 	void MoveDown( PieceHolder &pieceHolder );
 	void MoveLeft( PieceHolder &pieceHolder );
 	void MoveRight( PieceHolder &pieceHolder );
+
+	void UpdateStateChange();
+	void UpdateMapBridgeState( int row1, int column1, int row2, int column2 );
 };
 
 #endif //__SSP__

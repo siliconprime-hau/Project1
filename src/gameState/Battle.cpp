@@ -29,6 +29,7 @@ int tmp_num_enemy = 7;
 
 void Battle::Init( int level, int levelSubMode )
 {	
+	mCurrentState = BATTLE_STATE_STAND;
 	mMap = new Map( 4, 6 );		
 	mEnemys = new PieceHolder[tmp_num_enemy];
 
@@ -47,7 +48,7 @@ void Battle::Init( int level, int levelSubMode )
 	{
 		for( int j = 0; j < tmp_map_num_column; j++ )
 		{
-			int tmp_type = rand() % 7;
+			int tmp_type = rand() % 9;
 
 			if( i < ( tmp_map_num_row - 1 ) )
 			{			
@@ -149,10 +150,10 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 			pieceHolder.mPosY = mMap->RowToY( pieceHolder.mNextRow );
 		}
 	}
-	/*else
+	else
 	{
 		pieceHolder.mPosY = mMap->RowToY( pieceHolder.mNextRow );
-	}*/
+	}
 	
 	if( pieceHolder.mCurrentColumn < pieceHolder.mNextColumn )
 	{
@@ -176,10 +177,10 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 			pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
 		}
 	}
-	/*else
+	else
 	{
 		pieceHolder.mPosX = mMap->ColumnToX( pieceHolder.mNextColumn );
-	}*/
+	}
 	
 	if(	pieceHolder.mPosY == mMap->RowToY( pieceHolder.mNextRow ) &&
 		pieceHolder.mPosX == mMap->ColumnToX( pieceHolder.mNextColumn ) )
@@ -297,6 +298,8 @@ void Battle::Update()
 		}
 		StartMoving( mMainChar );
 		tmp_is_start_move = true;
+		mCurrentState = BATTLE_STATE_MOVING;
+		UpdateStateChange();
 	}
 
 	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_UP ) == KEY_UP )
@@ -304,24 +307,32 @@ void Battle::Update()
 		MoveUp(mMainChar);
 		StartMoving( mMainChar );
 		tmp_is_start_move = true;
+		mCurrentState = BATTLE_STATE_MOVING;
+		UpdateStateChange();
 	}
 	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_DOWN ) == KEY_UP )
 	{
 		MoveDown(mMainChar);
 		StartMoving( mMainChar );
 		tmp_is_start_move = true;
+		mCurrentState = BATTLE_STATE_MOVING;
+		UpdateStateChange();
 	}
 	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_LEFT ) == KEY_UP )
 	{
 		MoveLeft(mMainChar);
 		StartMoving( mMainChar );
 		tmp_is_start_move = true;
+		mCurrentState = BATTLE_STATE_MOVING;
+		UpdateStateChange();
 	}
 	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_RIGHT ) == KEY_UP )
 	{
 		MoveRight(mMainChar);
 		StartMoving( mMainChar );
 		tmp_is_start_move = true;
+		mCurrentState = BATTLE_STATE_MOVING;
+		UpdateStateChange();
 	}
 
 
@@ -361,6 +372,95 @@ void Battle::Update()
 		{
 			UpdateMoving( mEnemys[i] );
 		}
+	}
+
+	if( mCurrentState == BATTLE_STATE_MOVING )
+	{
+		int tmp_is_moving;
+		tmp_is_moving = mMainChar.isMoving;
+
+		for( int i = 0; i< tmp_num_enemy; i++ )
+		{
+			if( mEnemys[i].isMoving == true )
+			{
+				tmp_is_moving = true;
+				break;
+			}
+		}
+
+		if( !tmp_is_moving )
+		{
+			mCurrentState = BATTLE_STATE_STAND;
+			UpdateStateChange();
+		}
+	}
+}
+
+void Battle::UpdateStateChange()
+{
+	if( mCurrentState == BATTLE_STATE_STAND )//update moving finish
+	{
+		int tmp_map_num_row = mMap->GetNumRow();
+		int tmp_map_num_column = mMap->GetNumColumn();		
+		for( int i = 0; i < tmp_map_num_row; i++ )
+		{
+			for( int j = 0; j < tmp_map_num_column; j++ )
+			{				
+				if( i < ( tmp_map_num_row - 1 ) )
+				{								
+					UpdateMapBridgeState( i, j, i + 1, j );
+				}
+
+				if( j < ( tmp_map_num_column - 1 ) )
+				{				
+					UpdateMapBridgeState( i, j, i, j + 1 );
+				}
+			}
+		}
+	}
+}
+
+void Battle::UpdateMapBridgeState( int row1, int column1, int row2, int column2 )
+{
+	int bridge12 = mMap->GetBridge( row1, column1, row2, column2 );
+	int bridge21 = mMap->GetBridge( row2, column2, row1, column1 );
+		
+	if( bridge12 == TWO_WAY_ONE_TIME )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+	}
+	else if( bridge12 == ONE_WAY_ONE_TIME )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+	}
+	else if( bridge12 == TWO_WAY_ONOFF_ON )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, TWO_WAY_ONOFF_OFF );
+	}
+	else if( bridge12 == TWO_WAY_ONOFF_OFF )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, TWO_WAY_ONOFF_ON );
+	}
+	else if( bridge12 == ONE_WAY_ONOFF_ON )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, ONE_WAY_ONOFF_OFF );
+	}
+	else if( bridge12 == ONE_WAY_ONOFF_OFF )
+	{
+		mMap->SetBridge( row1, column1, row2, column2, ONE_WAY_ONOFF_ON );
+	}
+	//--------------------------------------
+	else if( bridge21 == ONE_WAY_ONE_TIME )
+	{
+		mMap->SetBridge( row2, column2, row1, column1, UNBRIDGE );
+	}
+	else if( bridge21 == ONE_WAY_ONOFF_ON )
+	{
+		mMap->SetBridge( row2, column2, row1, column1, ONE_WAY_ONOFF_OFF );
+	}
+	else if( bridge21 == ONE_WAY_ONOFF_OFF )
+	{
+		mMap->SetBridge( row2, column2, row1, column1, ONE_WAY_ONOFF_ON );
 	}
 }
 
