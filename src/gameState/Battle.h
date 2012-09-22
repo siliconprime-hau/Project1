@@ -36,6 +36,7 @@ struct PieceHolder
 	unsigned long mLastMovingTime;
 	bool isMoving;
 	float mPosX, mPosY;
+	int mPreviousRow, mPreviousColumn;
 	int mCurrentRow, mCurrentColumn;
 	int mNextRow, mNextColumn;
 	Piece* mPiece;
@@ -56,6 +57,7 @@ public:
 	void Render();
 
 private:	
+	int mNumEnemy;
 	int mCurrentState;
 	Map* mMap;	
 	PieceHolder* mEnemys;
@@ -76,6 +78,10 @@ private:
 
 	void UpdateStateChange();
 	void UpdateMapBridgeState( int row1, int column1, int row2, int column2 );
+	//check if piece has just pass this bridge
+	bool isPass( PieceHolder pieceHolder, int row1, int column1, int row2, int column2 );
+	//check if bright has just passed
+	bool isBridgePass( int row1, int column1, int row2, int column2 );
 };
 
 #endif //__SSP__

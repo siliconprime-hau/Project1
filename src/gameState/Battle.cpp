@@ -25,13 +25,12 @@ Battle::~Battle()
 	delete[] mEnemys;
 }
 
-int tmp_num_enemy = 7;
-
 void Battle::Init( int level, int levelSubMode )
 {	
 	mCurrentState = BATTLE_STATE_STAND;
 	mMap = new Map( 4, 6 );		
-	mEnemys = new PieceHolder[tmp_num_enemy];
+	mNumEnemy = 7;
+	mEnemys = new PieceHolder[mNumEnemy];
 
 	mMap->SetPaintZone( gScreenHeight*LEVEL_MENU_PANEL_WIDTH + gScreenHeight*LEVEL_MAP_PADDING,
 						gScreenHeight*LEVEL_MAP_PADDING,
@@ -66,7 +65,7 @@ void Battle::Init( int level, int levelSubMode )
 	Sprite* piece_sprite = new Sprite( charModules, charFrames, charAnims, characters_sprite_img );
 		
 	mMainChar.mPiece =  new Piece();
-	for( int i = 0; i< tmp_num_enemy; i++ )
+	for( int i = 0; i< mNumEnemy; i++ )
 	{		
 		mEnemys[i].mPiece = new Piece();
 	}
@@ -187,6 +186,8 @@ void Battle::UpdateMoving( PieceHolder &pieceHolder )
 	{
 		pieceHolder.isMoving = false;
 		pieceHolder.mPiece->SetState( PIECE_STATE_STAND );
+		pieceHolder.mPreviousColumn = pieceHolder.mCurrentColumn;
+		pieceHolder.mPreviousRow = pieceHolder.mCurrentRow;
 		pieceHolder.mCurrentColumn = pieceHolder.mNextColumn;
 		pieceHolder.mCurrentRow = pieceHolder.mNextRow;
 	}
@@ -207,6 +208,8 @@ void Battle::SetPosXY( PieceHolder &pieceHolder, float posX, float posY )
 
 void Battle::SetPosRC( PieceHolder &pieceHolder, int row, int column )
 {
+	pieceHolder.mPreviousRow = row;
+	pieceHolder.mPreviousColumn = column;
 	pieceHolder.mCurrentRow = row;
 	pieceHolder.mCurrentColumn = column;
 	pieceHolder.mNextRow = row;
@@ -337,7 +340,7 @@ void Battle::Update()
 
 
 	//draft: random move enemy
-	for( int i = 0; i< tmp_num_enemy; i++ )
+	for( int i = 0; i< mNumEnemy; i++ )
 	{
 		if( mEnemys[i].isMoving == false && tmp_is_start_move == true )
 		{
@@ -366,7 +369,7 @@ void Battle::Update()
 	{
 		UpdateMoving( mMainChar );
 	}
-	for( int i = 0; i< tmp_num_enemy; i++ )
+	for( int i = 0; i< mNumEnemy; i++ )
 	{
 		if( mEnemys[i].isMoving )
 		{
@@ -379,7 +382,7 @@ void Battle::Update()
 		int tmp_is_moving;
 		tmp_is_moving = mMainChar.isMoving;
 
-		for( int i = 0; i< tmp_num_enemy; i++ )
+		for( int i = 0; i< mNumEnemy; i++ )
 		{
 			if( mEnemys[i].isMoving == true )
 			{
@@ -427,11 +430,17 @@ void Battle::UpdateMapBridgeState( int row1, int column1, int row2, int column2 
 		
 	if( bridge12 == TWO_WAY_ONE_TIME )
 	{
-		mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+		if( isBridgePass( row1, column1, row2, column2 ) )
+		{
+			mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+		}
 	}
 	else if( bridge12 == ONE_WAY_ONE_TIME )
 	{
-		mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+		if( isBridgePass( row1, column1, row2, column2 ) )
+		{
+			mMap->SetBridge( row1, column1, row2, column2, UNBRIDGE );
+		}
 	}
 	else if( bridge12 == TWO_WAY_ONOFF_ON )
 	{
@@ -452,7 +461,10 @@ void Battle::UpdateMapBridgeState( int row1, int column1, int row2, int column2 
 	//--------------------------------------
 	else if( bridge21 == ONE_WAY_ONE_TIME )
 	{
-		mMap->SetBridge( row2, column2, row1, column1, UNBRIDGE );
+		if( isBridgePass( row1, column1, row2, column2 ) )
+		{
+			mMap->SetBridge( row2, column2, row1, column1, UNBRIDGE );
+		}
 	}
 	else if( bridge21 == ONE_WAY_ONOFF_ON )
 	{
@@ -464,10 +476,41 @@ void Battle::UpdateMapBridgeState( int row1, int column1, int row2, int column2 
 	}
 }
 
+bool Battle::isPass( PieceHolder pieceHolder, int row1, int column1, int row2, int column2 )
+{
+	if(	( pieceHolder.mCurrentColumn == column1 && pieceHolder.mCurrentRow == row1 && 
+		pieceHolder.mPreviousColumn == column2 && pieceHolder.mPreviousRow == row2 ) ||
+		( pieceHolder.mCurrentColumn == column2 && pieceHolder.mCurrentRow == row2 && 
+		pieceHolder.mPreviousColumn == column1 && pieceHolder.mPreviousRow == row1 ) )
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Battle::isBridgePass( int row1, int column1, int row2, int column2 )
+{
+	if( isPass( mMainChar, row1, column1, row2, column2 ) )
+	{
+		return true;
+	}
+
+	for( int i = 0; i < mNumEnemy; i++ )
+	{
+		if( isPass( mEnemys[i], row1, column1, row2, column2 ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Battle::Render()
 {
 	mMap->PaintMap();
-	for( int i = 0; i< tmp_num_enemy; i++ )
+	for( int i = 0; i< mNumEnemy; i++ )
 	{						
 		if( mEnemys[i].isMoving )
 		{
