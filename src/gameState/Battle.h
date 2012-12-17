@@ -1,5 +1,5 @@
-#ifndef __SSP__
-#define __SSP__
+#ifndef __BATTLE__
+#define __BATTLE__
 
 #include "GameState.h"
 #include "Map.h"
@@ -84,4 +84,4 @@ private:
 	bool isBridgePass( int row1, int column1, int row2, int column2 );
 };
 
-#endif //__SSP__
+#endif //__BATTLE__

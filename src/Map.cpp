@@ -52,7 +52,7 @@ Map::Map( int numRow, int numColumn )
 	{
 		for( int j = 0; j < tmp_row_column; j++ )
 		{						
-			mMap[i][j] = BRIDGE_TYPE::UNBRIDGE;			
+			mMap[i][j] = UNBRIDGE;
 		}
 	}
 }
@@ -98,53 +98,53 @@ void Map::SetRoad( int row1, int column1, int row2, int column2, int roadType )
 
 void Map::SetBridge( int row1, int column1, int row2, int column2, int bridgeType )
 {
-	if( bridgeType == BRIDGE_TYPE::TWO_WAY_ALWAYS_ON )
+	if( bridgeType == TWO_WAY_ALWAYS_ON )
 	{
 		SetRoad( row1, column1, row2, column2, ROAD_ON );
 		SetRoad( row2, column2, row1, column1, ROAD_ON );
 	}
-	else if( bridgeType == BRIDGE_TYPE::TWO_WAY_ONE_TIME )
+	else if( bridgeType == TWO_WAY_ONE_TIME )
 	{
 		SetRoad( row1, column1, row2, column2, ROAD_ONE_TIME );
 		SetRoad( row2, column2, row1, column1, ROAD_ONE_TIME );
 	}
-	else if( ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF ) )
+	else if( ( bridgeType == TWO_WAY_ONOFF_ON ) || ( bridgeType == TWO_WAY_ONOFF_OFF ) )
 	{
-		if( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_ON )
+		if( bridgeType == TWO_WAY_ONOFF_ON )
 		{
 			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_ON );
 			SetRoad( row2, column2, row1, column1, ROAD_ONOFF_ON );
 		}
-		else//( bridgeType == BRIDGE_TYPE::TWO_WAY_ONOFF_OFF )
+		else//( bridgeType == TWO_WAY_ONOFF_OFF )
 		{
 			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_OFF );
 			SetRoad( row2, column2, row1, column1, ROAD_ONOFF_OFF );
 		}
 	}
-	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ALWAYS_ON )
+	else if( bridgeType == ONE_WAY_ALWAYS_ON )
 	{
 		SetRoad( row1, column1, row2, column2, ROAD_ON );
 		SetRoad( row2, column2, row1, column1, ROAD_OFF );
 	}
-	else if( bridgeType == BRIDGE_TYPE::ONE_WAY_ONE_TIME )
+	else if( bridgeType == ONE_WAY_ONE_TIME )
 	{
 		SetRoad( row1, column1, row2, column2, ROAD_ONE_TIME );
 		SetRoad( row2, column2, row1, column1, ROAD_OFF );
 	}
-	else if( ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_ON ) || ( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF ) )
+	else if( ( bridgeType == ONE_WAY_ONOFF_ON ) || ( bridgeType == ONE_WAY_ONOFF_OFF ) )
 	{
-		if( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_ON )
+		if( bridgeType == ONE_WAY_ONOFF_ON )
 		{
 			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_ON );
 			SetRoad( row2, column2, row1, column1, ROAD_OFF );
 		}
-		else//( bridgeType == BRIDGE_TYPE::ONE_WAY_ONOFF_OFF )
+		else//( bridgeType == ONE_WAY_ONOFF_OFF )
 		{
 			SetRoad( row1, column1, row2, column2, ROAD_ONOFF_OFF );
 			SetRoad( row2, column2, row1, column1, ROAD_OFF );
 		}
 	}
-	else if( bridgeType == BRIDGE_TYPE::UNBRIDGE )
+	else if( bridgeType == UNBRIDGE )
 	{
 		SetRoad( row1, column1, row2, column2, ROAD_OFF );
 		SetRoad( row2, column2, row1, column1, ROAD_OFF );
@@ -165,42 +165,42 @@ int Map::GetBridge( int row1, int column1, int row2, int column2 )
 
 	if( road12 == ROAD_OFF && road21 == ROAD_OFF )
 	{
-		return BRIDGE_TYPE::UNBRIDGE;
+		return UNBRIDGE;
 	}
 	else if( road12 == ROAD_ON && road21 == ROAD_ON )
 	{
-		return BRIDGE_TYPE::TWO_WAY_ALWAYS_ON;
+		return TWO_WAY_ALWAYS_ON;
 	}
 	else if( road12 == ROAD_ON && road21 == ROAD_OFF )
 	{
-		return BRIDGE_TYPE::ONE_WAY_ALWAYS_ON;
+		return ONE_WAY_ALWAYS_ON;
 	}
 	else if( road12 == ROAD_ONE_TIME && road21 == ROAD_ONE_TIME )
 	{
-		return BRIDGE_TYPE::TWO_WAY_ONE_TIME;
+		return TWO_WAY_ONE_TIME;
 	}
 	else if( road12 == ROAD_ONE_TIME && road21 == ROAD_OFF )
 	{
-		return BRIDGE_TYPE::ONE_WAY_ONE_TIME;
+		return ONE_WAY_ONE_TIME;
 	}
 	else if( road12 == ROAD_ONOFF_ON && road21 == ROAD_ONOFF_ON )
 	{
-		return BRIDGE_TYPE::TWO_WAY_ONOFF_ON;
+		return TWO_WAY_ONOFF_ON;
 	}
 	else if( road12 == ROAD_ONOFF_OFF && road21 == ROAD_ONOFF_OFF )
 	{
-		return BRIDGE_TYPE::TWO_WAY_ONOFF_OFF;
+		return TWO_WAY_ONOFF_OFF;
 	}
 	else if( road12 == ROAD_ONOFF_ON && road21 == ROAD_OFF )
 	{
-		return BRIDGE_TYPE::ONE_WAY_ONOFF_ON;
+		return ONE_WAY_ONOFF_ON;
 	}
 	else if( road12 == ROAD_ONOFF_OFF && road21 == ROAD_OFF )
 	{
-		return BRIDGE_TYPE::ONE_WAY_ONOFF_OFF;
+		return ONE_WAY_ONOFF_OFF;
 	}
 
-	return BRIDGE_TYPE::UNBRIDGE;
+	return UNBRIDGE;
 }
 
 bool Map::isCanMove( int row1, int column1, int row2, int column2 )

@@ -65,6 +65,32 @@ TouchHolder gPopTouch( queue<TouchHolder> &touchQueue );
 
 
 
+
+//keycode define
+#ifdef __WINDOW__
+
+#include <Windows.h>
+#define KC_UP		VK_UP
+#define KC_DOWN		VK_DOWN
+#define KC_LEFT		VK_LEFT
+#define KC_RIGHT	VK_RIGHT
+
+#else //__WINDOW__
+
+#ifdef __ANDROID__
+
+#include <android/keycodes.h>
+#define KC_UP		AKEYCODE_W
+#define KC_DOWN		AKEYCODE_S
+#define KC_LEFT		AKEYCODE_A
+#define KC_RIGHT	AKEYCODE_D
+
+#else //__ANDROID__
+
+#endif //__ANDROID__
+
+#endif //__WINDOW__
+
 enum KEY_TYPE
 {
 	KEY_INACTIVE = -1,

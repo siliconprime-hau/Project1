@@ -9,7 +9,6 @@
 #include "TouchGestureDetector.h"
 #include "KeyEventMng.h"
 
-#include <Windows.h>
 #include <ctime>
 
 using namespace TouchGestureDetector;
@@ -305,7 +304,7 @@ void Battle::Update()
 		UpdateStateChange();
 	}
 
-	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_UP ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( KC_UP ) == KEY_UP )
 	{
 		MoveUp(mMainChar);
 		StartMoving( mMainChar );
@@ -313,7 +312,7 @@ void Battle::Update()
 		mCurrentState = BATTLE_STATE_MOVING;
 		UpdateStateChange();
 	}
-	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_DOWN ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( KC_DOWN ) == KEY_UP )
 	{
 		MoveDown(mMainChar);
 		StartMoving( mMainChar );
@@ -321,7 +320,7 @@ void Battle::Update()
 		mCurrentState = BATTLE_STATE_MOVING;
 		UpdateStateChange();
 	}
-	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_LEFT ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( KC_LEFT ) == KEY_UP )
 	{
 		MoveLeft(mMainChar);
 		StartMoving( mMainChar );
@@ -329,7 +328,7 @@ void Battle::Update()
 		mCurrentState = BATTLE_STATE_MOVING;
 		UpdateStateChange();
 	}
-	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( VK_RIGHT ) == KEY_UP )
+	if( mMainChar.isMoving == false && KeyEventMng::GetKeyAction( KC_RIGHT ) == KEY_UP )
 	{
 		MoveRight(mMainChar);
 		StartMoving( mMainChar );
