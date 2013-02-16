@@ -9,7 +9,6 @@
 #include "TouchGestureDetector.h"
 #include "KeyEventMng.h"
 
-#include <ctime>
 
 using namespace TouchGestureDetector;
 using namespace KeyEventMng;
@@ -27,8 +26,8 @@ Battle::~Battle()
 void Battle::Init( int level, int levelSubMode )
 {	
 	mCurrentState = BATTLE_STATE_STAND;
-	mMap = new Map( 4, 6 );		
-	mNumEnemy = 7;
+	mMap = new Map( 8, 12 );		
+	mNumEnemy = 17;
 	mEnemys = new PieceHolder[mNumEnemy];
 
 	mMap->SetPaintZone( gScreenHeight*LEVEL_MENU_PANEL_WIDTH + gScreenHeight*LEVEL_MAP_PADDING,
@@ -38,24 +37,38 @@ void Battle::Init( int level, int levelSubMode )
 						);
 
 
-	//generate map
+	//TODO generate map
 	int tmp_map_num_row = mMap->GetNumRow();
-	int tmp_map_num_column = mMap->GetNumColumn();
-	srand(time(0));
+	int tmp_map_num_column = mMap->GetNumColumn();	
 	for( int i = 0; i < tmp_map_num_row; i++ )
 	{
 		for( int j = 0; j < tmp_map_num_column; j++ )
 		{
 			int tmp_type = rand() % 9;
+			//int tmp_type = rand() % 6 + 3;//tmp_type = TWO_WAY_ALWAYS_ON;
 
 			if( i < ( tmp_map_num_row - 1 ) )
 			{			
-				mMap->SetBridge( i, j, i + 1, j, tmp_type );
+				if( tmp_type%2 > 0 )
+				{
+					mMap->SetBridge( i, j, i + 1, j, tmp_type );
+				}
+				else
+				{
+					mMap->SetBridge( i + 1, j, i, j, tmp_type );
+				}
 			}
 
 			if( j < ( tmp_map_num_column - 1 ) )
 			{				
-				mMap->SetBridge( i, j, i, j + 1, tmp_type );
+				if( tmp_type%2 > 0 )
+				{
+					mMap->SetBridge( i, j, i, j + 1, tmp_type );
+				}
+				else
+				{
+					mMap->SetBridge( i, j + 1, i, j, tmp_type );
+				}
 			}
 		}
 	}
@@ -69,46 +82,62 @@ void Battle::Init( int level, int levelSubMode )
 		mEnemys[i].mPiece = new Piece();
 	}
 
-	//raw init
+	//TODO raw init
 	mMainChar.mPiece->Init( piece_sprite, 25, 24 );
 	mMainChar.mCurrentRow = 0;
 	mMainChar.mCurrentColumn = 0;
 	SetPosRC( mMainChar, 0, 0 );
 
-	mEnemys[0].mPiece->Init( piece_sprite, 6, 25 );
-	mEnemys[0].mCurrentRow = 3;
-	mEnemys[0].mCurrentColumn = 5;
-	SetPosRC( mEnemys[7], 3, 5 );
+	int tmp_max_num_sprite = 24;
+	int tmp_max_enemy_type = ENEMY_TYPE_HORIZONTAL_R1 + 1;
+	for( int i = 0; i < mNumEnemy; i++ )
+	{
+		int tmp_row = rand()%tmp_map_num_row;
+		int tmp_column = rand()%tmp_map_num_column;		
+		int tmp_type = rand()%tmp_max_enemy_type;
 
-	mEnemys[1].mPiece->Init( piece_sprite, 0, 25 );
-	mEnemys[1].mCurrentRow = 0;
-	mEnemys[1].mCurrentColumn = 2;
-	SetPosRC( mEnemys[1], 0, 2 );
+		mEnemys[i].mType = tmp_type;
+		mEnemys[i].mPiece->Init( piece_sprite, tmp_type%tmp_max_num_sprite, 25 );
+		mEnemys[i].mCurrentRow = tmp_row;
+		mEnemys[i].mCurrentColumn = tmp_column;
+		SetPosRC( mEnemys[i], tmp_row, tmp_column );
+	}
 
-	mEnemys[2].mPiece->Init( piece_sprite, 1, 25 );
-	mEnemys[2].mCurrentRow = 0;
-	mEnemys[2].mCurrentColumn = 4;
-	SetPosRC( mEnemys[2], 0, 4 );
+	//mEnemys[0].mPiece->Init( piece_sprite, 6, 25 );
+	//mEnemys[0].mCurrentRow = 3;
+	//mEnemys[0].mCurrentColumn = 5;
+	//SetPosRC( mEnemys[7], 3, 5 );
 
-	mEnemys[3].mPiece->Init( piece_sprite, 2, 25 );
-	mEnemys[3].mCurrentRow = 2;
-	mEnemys[3].mCurrentColumn = 1;
-	SetPosRC( mEnemys[3], 2, 1 );
+	//mEnemys[1].mPiece->Init( piece_sprite, 0, 25 );
+	//mEnemys[1].mCurrentRow = 0;
+	//mEnemys[1].mCurrentColumn = 2;
+	//SetPosRC( mEnemys[1], 0, 2 );
 
-	mEnemys[4].mPiece->Init( piece_sprite, 3, 25 );
-	mEnemys[4].mCurrentRow = 2;
-	mEnemys[4].mCurrentColumn = 4;
-	SetPosRC( mEnemys[4], 2, 4 );
+	//mEnemys[2].mPiece->Init( piece_sprite, 1, 25 );
+	//mEnemys[2].mCurrentRow = 0;
+	//mEnemys[2].mCurrentColumn = 4;
+	//SetPosRC( mEnemys[2], 0, 4 );
 
-	mEnemys[5].mPiece->Init( piece_sprite, 4, 25 );
-	mEnemys[5].mCurrentRow = 3;
-	mEnemys[5].mCurrentColumn = 0;
-	SetPosRC( mEnemys[5], 3, 0 );
+	//mEnemys[3].mPiece->Init( piece_sprite, 2, 25 );
+	//mEnemys[3].mCurrentRow = 2;
+	//mEnemys[3].mCurrentColumn = 1;
+	//SetPosRC( mEnemys[3], 2, 1 );
 
-	mEnemys[6].mPiece->Init( piece_sprite, 5, 25 );
-	mEnemys[6].mCurrentRow = 3;
-	mEnemys[6].mCurrentColumn = 1;
-	SetPosRC( mEnemys[6], 3, 1 );	
+	//mEnemys[4].mPiece->Init( piece_sprite, 3, 25 );
+	//mEnemys[4].mCurrentRow = 2;
+	//mEnemys[4].mCurrentColumn = 4;
+	//SetPosRC( mEnemys[4], 2, 4 );
+
+	//mEnemys[5].mPiece->Init( piece_sprite, 4, 25 );
+	//mEnemys[5].mCurrentRow = 3;
+	//mEnemys[5].mCurrentColumn = 0;
+	//SetPosRC( mEnemys[5], 3, 0 );
+
+	//mEnemys[6].mPiece->Init( piece_sprite, 5, 25 );
+	//mEnemys[6].mCurrentRow = 3;
+	//mEnemys[6].mCurrentColumn = 1;
+	//SetPosRC( mEnemys[6], 3, 1 );	
+
 }
 
 void Battle::UpdateMoving( PieceHolder &pieceHolder )
@@ -262,6 +291,106 @@ void Battle::MoveRight( PieceHolder &pieceHolder )
 				(pieceHolder.mCurrentColumn + 1)<mMap->GetNumColumn()?(pieceHolder.mCurrentColumn + 1):mMap->GetNumColumn()-1 );
 }
 
+void Battle::FindNextPos( PieceHolder &pieceHolder )
+{
+	int tmp_map_num_row = mMap->GetNumRow();
+	int tmp_map_num_column = mMap->GetNumColumn();
+
+	switch( pieceHolder.mType )
+	{
+	case ENEMY_TYPE_TO_TARGET_R1://TODO find pos
+		//break;
+	case ENEMY_TYPE_RANDOM_KNOW_R1:
+	case ENEMY_TYPE_RANDOM_UNKNOW_R1:
+		{			
+			int next = rand()%4;
+			if( next == 0 )//up
+			{
+				MoveUp( pieceHolder );
+			}
+			else if( next == 1 )//down
+			{
+				MoveDown( pieceHolder );
+			}
+			else if( next == 2 )//left
+			{
+				MoveLeft( pieceHolder );
+			}
+			else //right
+			{
+				MoveRight( pieceHolder );
+			}
+		}
+		break;	
+	case ENEMY_TYPE_UP_DOWN_R1:
+		MoveDown( pieceHolder );
+		break;
+	case ENEMY_TYPE_DOWN_UP_R1:
+		MoveUp( pieceHolder );
+		break;
+	case ENEMY_TYPE_LEFT_RIGHT_R1:
+		MoveRight( pieceHolder );
+		break;
+	case ENEMY_TYPE_RIGHT_LEFT_R1:
+		MoveLeft( pieceHolder );
+		break;
+	case ENEMY_TYPE_VERTICAL_R1:
+		if( pieceHolder.mCurrentRow > pieceHolder.mPreviousRow )//moving down
+		{
+			if(	mMap->isMoveable( pieceHolder.mCurrentRow, pieceHolder.mCurrentColumn,
+				(pieceHolder.mCurrentRow + 1)<mMap->GetNumRow()?(pieceHolder.mCurrentRow + 1):mMap->GetNumRow()-1,
+				pieceHolder.mCurrentColumn ) == false )//can not move down, change to move up
+			{
+				MoveUp( pieceHolder );
+			}
+			else
+			{
+				MoveDown( pieceHolder );
+			}
+		}
+		else //moving up
+		{
+			if(	mMap->isMoveable( pieceHolder.mCurrentRow, pieceHolder.mCurrentColumn,
+				(pieceHolder.mCurrentRow - 1)>=0?(pieceHolder.mCurrentRow - 1):0,
+				pieceHolder.mCurrentColumn ) == false )//can not move up, change to move down
+			{
+				MoveDown( pieceHolder );
+			}
+			else
+			{
+				MoveUp( pieceHolder );
+			}
+		}		
+		break;
+	case ENEMY_TYPE_HORIZONTAL_R1:
+		if( pieceHolder.mCurrentColumn > pieceHolder.mPreviousColumn )//moving right
+		{
+			if(	mMap->isMoveable( pieceHolder.mCurrentRow, pieceHolder.mCurrentColumn, pieceHolder.mCurrentRow,
+				(pieceHolder.mCurrentColumn + 1)<mMap->GetNumColumn()?(pieceHolder.mCurrentColumn + 1):mMap->GetNumColumn()-1 ) == false )//can not move right, change to move left
+			{
+				MoveLeft( pieceHolder );
+			}
+			else
+			{
+				MoveRight( pieceHolder );
+			}
+		}
+		else //moving left
+		{
+			if(	mMap->isMoveable( pieceHolder.mCurrentRow, pieceHolder.mCurrentColumn, pieceHolder.mCurrentRow,
+				(pieceHolder.mCurrentColumn - 1)>=0?(pieceHolder.mCurrentColumn - 1):0 ) == false )//can not move left, change to move right
+			{
+				MoveRight( pieceHolder );
+			}
+			else
+			{
+				MoveLeft( pieceHolder );
+			}
+		}
+		break;
+		//TODO more case
+	}
+}
 
 void Battle::Update()
 {	
@@ -338,12 +467,12 @@ void Battle::Update()
 	}
 
 
-	//draft: random move enemy
+	//TODO draft: random move enemy
 	for( int i = 0; i< mNumEnemy; i++ )
 	{
 		if( mEnemys[i].isMoving == false && tmp_is_start_move == true )
 		{
-			int tmp_direction = rand() % 4;
+			/*int tmp_direction = rand() % 4;
 			switch(tmp_direction)
 			{
 			case 0:
@@ -358,7 +487,8 @@ void Battle::Update()
 			case 3:
 				MoveRight(mEnemys[i]);
 				break;
-			}
+			}*/
+			FindNextPos( mEnemys[i] );
 			StartMoving( mEnemys[i] );
 		}
 	}

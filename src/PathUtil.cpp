@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int i4_huge = 2147483647;
+int PATHUTIL_i4_huge = 2147483647;
 
 namespace PathUtil {
 
@@ -41,10 +41,10 @@ namespace PathUtil {
 
 		if ( mv == - 1 )
 		{
-		  fprintf ( stdout, "\n" );
-		  fprintf ( stdout, "DIJKSTRA_DISTANCE - Warning!\n" );
-		  fprintf ( stdout, "  Search terminated early.\n" );
-		  fprintf ( stdout, "  Graph might not be connected.\n" );
+		  //fprintf ( stdout, "\n" );
+		  //fprintf ( stdout, "DIJKSTRA_DISTANCE - Warning!\n" );
+		  //fprintf ( stdout, "  Search terminated early.\n" );
+		  //fprintf ( stdout, "  Graph might not be connected.\n" );
 		  break;
 		}
 
@@ -61,7 +61,7 @@ namespace PathUtil {
 	{
 	  int i;
   
-	  *d = i4_huge;
+	  *d = PATHUTIL_i4_huge;
 	  *v = -1;
 
 	  for ( i = 0; i < num_edge; i++ )
@@ -84,7 +84,7 @@ namespace PathUtil {
 	  {
 		if ( !connected[i] )
 		{
-		  if ( ohd[mv][i] < i4_huge )
+		  if ( ohd[mv][i] < PATHUTIL_i4_huge )
 		  {
 			  if ( result[PATHUTIL_MIND][mv] + ohd[mv][i] < result[PATHUTIL_MIND][i] )  
 			{

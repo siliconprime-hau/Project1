@@ -23,13 +23,37 @@ enum BATTLE_LEVEL_SUB_MODE//game level sub mode
 	BATTLE_LEVEL_SUB_MODE_1 = 0
 };
 
-
 enum BATTLE_STATE
 {
 	BATTLE_STATE_STAND = 0,
 	BATTLE_STATE_MOVING
 };
 
+
+
+enum ENEMY_TYPE
+{
+	ENEMY_TYPE_TO_TARGET_R1 = 0,//range = 1
+	ENEMY_TYPE_RANDOM_KNOW_R1,
+	ENEMY_TYPE_RANDOM_UNKNOW_R1,
+	ENEMY_TYPE_VERTICAL_R1,
+	ENEMY_TYPE_HORIZONTAL_R1,
+	ENEMY_TYPE_UP_DOWN_R1,
+	ENEMY_TYPE_DOWN_UP_R1,
+	ENEMY_TYPE_LEFT_RIGHT_R1,
+	ENEMY_TYPE_RIGHT_LEFT_R1,
+	ENEMY_TYPE_TO_TARGET_R2,//range = 2
+	ENEMY_TYPE_RANDOM_KNOW_R2,
+	ENEMY_TYPE_RANDOM_UNKNOW_R2,
+	ENEMY_TYPE_VERTICAL_R2,
+	ENEMY_TYPE_HORIZONTAL_R2,
+	ENEMY_TYPE_UP_DOWN_R2,
+	ENEMY_TYPE_DOWN_UP_R2,
+	ENEMY_TYPE_LEFT_RIGHT_R2,
+	ENEMY_TYPE_RIGHT_LEFT_R2	
+};
+
+#define DEFAULT_ENEMY_TYPE	ENEMY_TYPE_TO_TARGET_R1
 
 struct PieceHolder
 {
@@ -39,10 +63,12 @@ struct PieceHolder
 	int mPreviousRow, mPreviousColumn;
 	int mCurrentRow, mCurrentColumn;
 	int mNextRow, mNextColumn;
+	int mType;
 	Piece* mPiece;
 	PieceHolder()
 	{
 		isMoving = false;
+		mType = DEFAULT_ENEMY_TYPE;
 	}
 };
 
@@ -75,6 +101,7 @@ private:
 	void MoveDown( PieceHolder &pieceHolder );
 	void MoveLeft( PieceHolder &pieceHolder );
 	void MoveRight( PieceHolder &pieceHolder );
+	void FindNextPos( PieceHolder &pieceHolder );
 
 	void UpdateStateChange();
 	void UpdateMapBridgeState( int row1, int column1, int row2, int column2 );

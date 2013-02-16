@@ -210,6 +210,13 @@ bool Map::isCanMove( int row1, int column1, int row2, int column2 )
 	return !( current_type == ROAD_OFF || current_type == ROAD_ONOFF_OFF );
 }
 
+bool Map::isMoveable( int row1, int column1, int row2, int column2 )
+{
+	int current_type = GetRoad( row1, column1, row2, column2 );
+
+	return !( current_type == ROAD_OFF );
+}
+
 float Map::RowToY( int row )
 {
 	return mYPos + mHeight/(mNumRow-1)*row;
@@ -265,16 +272,7 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 	int bridge12 = GetBridge( row1, column1, row2, column2 );
 	int bridge21 = GetBridge( row2, column2, row1, column1 );
 
-	if( bridge12 == UNBRIDGE )
-	{
-		DrawLine
-		(
-			column1 * column_width + mXPos, row1 * row_height + mYPos,
-			column2 * column_width + mXPos, row2 * row_height + mYPos,
-			COLOR_UNLINK
-		);
-	}
-	else if( bridge12 == TWO_WAY_ALWAYS_ON )
+	if( bridge12 == TWO_WAY_ALWAYS_ON )
 	{
 		DrawLine
 		(
@@ -445,6 +443,15 @@ void Map::PaintBridge( int row1, int column1, int row2, int column2 )
 			( ( row2 * row_height + mYPos ) + ( row1 * row_height + mYPos ) ) / 2,
 			column2 * column_width + mXPos, row2 * row_height + mYPos,
 			COLOR_LINK_ONOFF_OFF
+		);
+	}
+	else /*if( bridge12 == UNBRIDGE && bridge21 == UNBRIDGE )*/
+	{
+		DrawLine
+		(
+			column1 * column_width + mXPos, row1 * row_height + mYPos,
+			column2 * column_width + mXPos, row2 * row_height + mYPos,
+			COLOR_UNLINK
 		);
 	}
 }

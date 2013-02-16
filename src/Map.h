@@ -14,10 +14,10 @@
 enum BRIDGE_TYPE//the road between two edge
 {
 	UNBRIDGE = 0,
+	TWO_WAY_ONE_TIME,
+	ONE_WAY_ONE_TIME,	
 	TWO_WAY_ALWAYS_ON,
 	ONE_WAY_ALWAYS_ON,
-	TWO_WAY_ONE_TIME,
-	ONE_WAY_ONE_TIME,
 	TWO_WAY_ONOFF_ON,
 	TWO_WAY_ONOFF_OFF,
 	ONE_WAY_ONOFF_ON,
@@ -57,14 +57,16 @@ public:
 	int GetRoad( int row1, int column1, int row2, int column2 );
 	//return the bridge type row1,column1 <-> row2,column2
 	int GetBridge( int row1, int column1, int row2, int column2 );
-	//check if can move from row1,column1 -> row2,column2
+	//check if can move from row1,column1 -> row2,column2 right now
 	bool isCanMove( int row1, int column1, int row2, int column2 );
-
+	//check if there a bridge from row1,column1 -> row2,column2 (discard bright state on/off)
+	bool isMoveable( int row1, int column1, int row2, int column2 );
+	unsigned char** mMap;
 private:
 	int mNumRow, mNumColumn;
 	float mXPos, mYPos, mWidth, mHeight; 
 
-	unsigned char** mMap;
+	/*unsigned char** mMap;*/
 	void PaintBridge( int row1, int column1, int row2, int column2 );
 
 	int RCToEdge( int row, int column );

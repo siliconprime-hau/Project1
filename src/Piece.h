@@ -3,6 +3,8 @@
 
 #include "l2d.h"
 
+
+
 enum PIECE_STATE
 {
 	PIECE_STATE_STAND = 0,
@@ -14,7 +16,7 @@ struct Piece
 	Sprite* mSprite;
 	int mStateStandAnimId, mStateMovingAnimId;
 	int mState;
-
+	
 	Piece();
 	~Piece();
 	void Init( Sprite* sprite, int stateStandAnimId, int stateMovingAnimId );
