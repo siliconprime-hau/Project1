@@ -1,6 +1,6 @@
 #include "Battle.h"
 #include <stdlib.h>
-#include "spriteDefine/spriteCharacters.h"
+#include "SpriteDefine/SpriteCharacters.h"
 #include "l2d.h"
 #include "Res.h"
 #include "Globals.h"
@@ -44,8 +44,9 @@ void Battle::Init( int level, int levelSubMode )
 	{
 		for( int j = 0; j < tmp_map_num_column; j++ )
 		{
-			int tmp_type = rand() % 9;
-			//int tmp_type = rand() % 6 + 3;//tmp_type = TWO_WAY_ALWAYS_ON;
+			//int tmp_type = rand() % 9;//all kind
+			int tmp_type = rand() % 6 + 3;//only moveable
+			//tmp_type = TWO_WAY_ALWAYS_ON;
 
 			if( i < ( tmp_map_num_row - 1 ) )
 			{			

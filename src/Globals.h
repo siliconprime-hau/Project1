@@ -10,7 +10,7 @@ using namespace std;
 
 
 
-#define SCREEN_SIMULATE_HEIGHT	540.0f//sceeen heigth for caculate process
+#define SCREEN_SIMULATE_HEIGHT	540.0f//sceeen heigth for caculate process - must be a float value
 
 
 

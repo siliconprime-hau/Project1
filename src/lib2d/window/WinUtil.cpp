@@ -118,7 +118,7 @@ GLboolean WinCreate ( const char *title, float screenWidth, float screenHeight  
                          title,
                          wStyle,
 						 GetSystemMetrics(SM_CXSCREEN) - screenWidth - 10,
-						 GetSystemMetrics(SM_CYSCREEN) - screenHeight - 60,
+						 GetSystemMetrics(SM_CYSCREEN) - screenHeight - 70,
                          windowRect.right - windowRect.left,
                          windowRect.bottom - windowRect.top,
                          NULL,

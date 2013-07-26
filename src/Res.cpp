@@ -1,14 +1,8 @@
 #include "Res.h"
 
 const char* gResImage[] =
-{
-	IMAGE_RES_PATH"img_test.png",
-	IMAGE_RES_PATH"img_test.jpg",
-	IMAGE_RES_PATH"img_test.bmp",
-	IMAGE_RES_PATH"img_test.tga",
-	IMAGE_RES_PATH"img_test.dds",
-	IMAGE_RES_PATH"test_sprite.png",
-	IMAGE_RES_PATH"characters.png",
+{	
+	IMAGE_RES_PATH"characters.png"
 };
 
 const char* gResAudio[] =

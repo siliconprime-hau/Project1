@@ -8,9 +8,11 @@ extern int PATHUTIL_i4_huge;
 
 namespace PathUtil {
 
-	int **GetPath ( int num_edge, int **ohd, int start_edge );
-	void find_nearest ( int num_edge, int *mind, int *connected, int *d, int *v );
-	void update_mind ( int mv, int *connected, int num_edge, int **ohd, int **result );
+	//num_edge: number of edges
+	//ohd: matrix contain the tree
+	//start_edge: edge to find shortest path to other edge
+	//return a two dimention array that contain the result
+	int **GetPath ( int num_edge, int **ohd, int start_edge );	
 
 }
 

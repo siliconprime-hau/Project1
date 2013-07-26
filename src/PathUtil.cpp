@@ -6,6 +6,8 @@ int PATHUTIL_i4_huge = 2147483647;
 
 namespace PathUtil {
 
+	void find_nearest ( int num_edge, int *mind, int *connected, int *d, int *v );
+	void update_mind ( int mv, int *connected, int num_edge, int **ohd, int **result );
 
 	int **GetPath ( int num_edge, int **ohd, int start_edge )
 	{
