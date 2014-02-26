@@ -19,7 +19,14 @@ GLfloat* ParseColor( unsigned int color )
 	return vColor;
 }
 
-void DrawRect( float x, float y, float w, float h, unsigned int color )//color should be like this 0xFFFFFFFF
+/*
+void DrawCircle( float x, float y, float radius, bool fill, unsigned int color )
+{
+	//TODO
+}
+*/
+
+void DrawRect( float x, float y, float w, float h, unsigned int color )
 {
 	gResetGeoMvp();		
 	esMatrixMultiply( &gMvpMatrix, &gModelView, &gOrthor );

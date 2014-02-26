@@ -1,6 +1,6 @@
 #include "Battle.h"
 #include <stdlib.h>
-#include "SpriteDefine/SpriteCharacters.h"
+#include "SpriteDefine/SpriteChar.h"
 #include "l2d.h"
 #include "Res.h"
 #include "Globals.h"
@@ -44,9 +44,9 @@ void Battle::Init( int level, int levelSubMode )
 	{
 		for( int j = 0; j < tmp_map_num_column; j++ )
 		{
-			//int tmp_type = rand() % 9;//all kind
-			int tmp_type = rand() % 6 + 3;//only moveable
-			//tmp_type = TWO_WAY_ALWAYS_ON;
+			int tmp_type = rand() % 9;//all kind
+			//int tmp_type = rand() % 6 + 3;//only moveable
+			//int tmp_type = TWO_WAY_ALWAYS_ON;
 
 			if( i < ( tmp_map_num_row - 1 ) )
 			{			
@@ -84,13 +84,13 @@ void Battle::Init( int level, int levelSubMode )
 	}
 
 	//TODO raw init
-	mMainChar.mPiece->Init( piece_sprite, 25, 24 );
+	mMainChar.mPiece->Init(piece_sprite, SPRITE_CHAR_ANIM_UP_RIGHT_DOWN_LEFT, SPRITE_CHAR_ANIM_UP_RIGHT_DOWN_LEFT);
 	mMainChar.mCurrentRow = 0;
 	mMainChar.mCurrentColumn = 0;
 	SetPosRC( mMainChar, 0, 0 );
 
-	int tmp_max_num_sprite = 24;
-	int tmp_max_enemy_type = ENEMY_TYPE_HORIZONTAL_R1 + 1;
+	int tmp_max_num_sprite = 14;
+	int tmp_max_enemy_type = ENEMY_TYPE_RIGHT_LEFT_R1 + 1;
 	for( int i = 0; i < mNumEnemy; i++ )
 	{
 		int tmp_row = rand()%tmp_map_num_row;
@@ -98,47 +98,11 @@ void Battle::Init( int level, int levelSubMode )
 		int tmp_type = rand()%tmp_max_enemy_type;
 
 		mEnemys[i].mType = tmp_type;
-		mEnemys[i].mPiece->Init( piece_sprite, tmp_type%tmp_max_num_sprite, 25 );
+		mEnemys[i].mPiece->Init(piece_sprite, enemySpriteMap[tmp_type], enemySpriteMap[tmp_type]);
 		mEnemys[i].mCurrentRow = tmp_row;
 		mEnemys[i].mCurrentColumn = tmp_column;
 		SetPosRC( mEnemys[i], tmp_row, tmp_column );
 	}
-
-	//mEnemys[0].mPiece->Init( piece_sprite, 6, 25 );
-	//mEnemys[0].mCurrentRow = 3;
-	//mEnemys[0].mCurrentColumn = 5;
-	//SetPosRC( mEnemys[7], 3, 5 );
-
-	//mEnemys[1].mPiece->Init( piece_sprite, 0, 25 );
-	//mEnemys[1].mCurrentRow = 0;
-	//mEnemys[1].mCurrentColumn = 2;
-	//SetPosRC( mEnemys[1], 0, 2 );
-
-	//mEnemys[2].mPiece->Init( piece_sprite, 1, 25 );
-	//mEnemys[2].mCurrentRow = 0;
-	//mEnemys[2].mCurrentColumn = 4;
-	//SetPosRC( mEnemys[2], 0, 4 );
-
-	//mEnemys[3].mPiece->Init( piece_sprite, 2, 25 );
-	//mEnemys[3].mCurrentRow = 2;
-	//mEnemys[3].mCurrentColumn = 1;
-	//SetPosRC( mEnemys[3], 2, 1 );
-
-	//mEnemys[4].mPiece->Init( piece_sprite, 3, 25 );
-	//mEnemys[4].mCurrentRow = 2;
-	//mEnemys[4].mCurrentColumn = 4;
-	//SetPosRC( mEnemys[4], 2, 4 );
-
-	//mEnemys[5].mPiece->Init( piece_sprite, 4, 25 );
-	//mEnemys[5].mCurrentRow = 3;
-	//mEnemys[5].mCurrentColumn = 0;
-	//SetPosRC( mEnemys[5], 3, 0 );
-
-	//mEnemys[6].mPiece->Init( piece_sprite, 5, 25 );
-	//mEnemys[6].mCurrentRow = 3;
-	//mEnemys[6].mCurrentColumn = 1;
-	//SetPosRC( mEnemys[6], 3, 1 );	
-
 }
 
 void Battle::UpdateMoving( PieceHolder &pieceHolder )

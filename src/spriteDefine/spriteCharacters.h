@@ -259,12 +259,12 @@ short* charFrames[] =
 
 
 //anims define
-#define ANIM_FRAME_OR_TIME	30
+#define ANIM_FRAME_OR_TIME	100
 #define YELLOW_FRAME_INDEX		24
 #define BLUE_FRAME_INDEX		25
 #define RED_FRAME_INDEX		26
 
-#define NUM_FRAME 1		//2: animate, 1: stand
+#define NUM_FRAME 2		//2: animate, 1: stand
 
 short charAnimData0[] =
 {
